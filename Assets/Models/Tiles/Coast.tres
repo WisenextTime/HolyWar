@@ -1,0 +1,16 @@
+[gd_resource type="CylinderMesh" load_steps=2 format=3 uid="uid://cdmr74ru8bcga"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_bl1tw"]
+transparency = 1
+specular_mode = 1
+albedo_color = Color(0, 0.933333, 1, 1)
+metallic_specular = 0.0
+rim_tint = 1.0
+
+[resource]
+material = SubResource("StandardMaterial3D_bl1tw")
+top_radius = 1.0
+bottom_radius = 1.0
+height = 0.1
+radial_segments = 6
+rings = 0

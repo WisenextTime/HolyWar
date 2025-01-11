@@ -1,0 +1,68 @@
+; Engine configuration file.
+; It's best edited using the editor UI and not directly,
+; since the parameters that go here are not all obvious.
+;
+; Format:
+;   [section] ; section goes between []
+;   param=value ; assign values to parameters
+
+config_version=5
+
+[application]
+
+config/name="HolyWar"
+config/name_localized={
+"en": "Holy War",
+"zh": "圣战"
+}
+config/version="1.0.0"
+config/features=PackedStringArray("4.3", "C#", "Forward Plus")
+config/icon="res://icon.svg"
+
+[dotnet]
+
+project/assembly_name="HolyWar"
+
+[editor_plugins]
+
+enabled=PackedStringArray()
+
+[file_customization]
+
+folder_colors={
+"res://Assets/": "orange",
+"res://Scenes/": "green",
+"res://Scripts/": "purple"
+}
+
+[gui]
+
+theme/custom="res://Assets/Theme/Main.theme"
+theme/custom_font="res://Assets/Theme/Fonts/方正像素.ttf"
+
+[importer_defaults]
+
+texture={
+"compress/channel_pack": 0,
+"compress/hdr_compression": 1,
+"compress/high_quality": false,
+"compress/lossy_quality": 0.7,
+"compress/mode": 3,
+"compress/normal_map": 0,
+"detect_3d/compress_to": 0,
+"mipmaps/generate": true,
+"mipmaps/limit": -1,
+"process/fix_alpha_border": true,
+"process/hdr_as_srgb": false,
+"process/hdr_clamp_exposure": false,
+"process/normal_map_invert_y": false,
+"process/premult_alpha": false,
+"process/size_limit": 0,
+"roughness/mode": 0,
+"roughness/src_normal": ""
+}
+
+[rendering]
+
+textures/canvas_textures/default_texture_filter=0
+environment/defaults/default_clear_color=Color(0, 0, 0, 1)

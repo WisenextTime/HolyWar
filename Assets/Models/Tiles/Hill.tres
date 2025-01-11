@@ -1,0 +1,20 @@
+[gd_resource type="ArrayMesh" load_steps=2 format=4 uid="uid://co6ua4mm4mvrf"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_sbdrr"]
+resource_name = "none"
+
+[resource]
+_surfaces = [{
+"aabb": AABB(-0.791566, 0.0624995, -0.926108, 1.58313, 0.321665, 1.85222),
+"attribute_data": PackedByteArray("5kkAAMyT/38AAP9/zJMAAOZJ/38AAAAAzJP/fwAA/3/mSQAA5kn/fwAAAADMkwAAAAD/f+ZJAADMk/9/AAAAAMyTAADmSf9/ohiqKsyTAADmSf9/5kn/f+ZJAADMk/9/RDFUVcyTAADmSf9/2W7/PwAAAADMkwAA8yT/P8yT/38AAP9/5kkAAKIYqioAAAAA5kn/fwAA/3/mSQAAohiqKgAAAADMkwAA5kkAAMyTAACiGKoq2W7/P+ZJ/38AAAAA615oJPMk/z/mSQAAZWD3JgAA/3/mSQAAGXp7UwAA/39lYPcm615oJMyT/3/zJP8/RDFUVaIYqirMkwAAGXp7U8yT/38AAP9/"),
+"format": 34896613399,
+"index_count": 66,
+"index_data": PackedByteArray("AAABAAIAAwAEAAUABgAHAAgACQAKAAsADAANAA4ADwAQABEAEgATABQAFQAWABcAGAAZABoAGwAcAB0AHgAfACAAIQAiACMAJAAlACYAJwAoACkAKgArACwALQAuAC8AMAAxADIAMwA0ADUANgA3ADgAOQA6ADsAPAA9AD4APwBAAEEA"),
+"material": SubResource("StandardMaterial3D_sbdrr"),
+"name": "none",
+"primitive": 3,
+"uv_scale": Vector4(0, 0, 0, 0),
+"vertex_count": 66,
+"vertex_data": PackedByteArray("//8AAIDCusKc/AAAgUK6wv9/AAD/f7rCnPwAAIFCusKcfAAAAAC6wv9/AAD/f7rCnHwAAAAAusIAAAAAfj26wv9/AAD/f7rCAAAAAH49usJiAwAAfb26wv9/AAD/f7rCYgMAAH29usJigwAA//+6wv9/AAD/f7rCYoMAAP//usL//wAAgMK6wv9/AAD/f7rCD67//yeO2cCc/AAAgULZwP//AACAwtnATb6z+EBhBtecfAAAAAAG15z8AACBQgbXkWn2xthfwsmcfAAAAADCyXyNOJVXecLJsIH2xv+/IsxiAwAAfb0izHyNOJVXeSLMsIH2xv+/P67//wAAgMI/rmKDAAD//z+uTb6z+EBhms4Prv//J46aznyNOJVXeZrOTb6z+EBhTM18jTiVV3lMzZx8AAAAAEzNqio4lalTHdoAAAAAfj0d2px8AAAAAB3aTb6z+EBhkLmc/AAAgUKQuQ+u//8njpC5sIH2xv+/67ZigwAA///rtmIDAAB9veu2D67//yeOw86wgfbG/7/DznyNOJVXecPOqio4lalT0shiAwAAfb3SyAAAAAB+PdLIkWn2xthfsr5iAwAAfb2yvqoqOJWpU7K+D67//yeOErH//wAAgMISsbCB9sb/vxKxkWn2xthfT9GqKjiVqVNP0Zx8AAAAAE/RkWn2xthfcbZ8jTiVV3lxtmIDAAB9vXG2qSyqaaksqmmpLKppqSyqaaksqmmpLKppqSyqaaksqmmpLKppqSyqaaksqmmpLKppqSyqaaksqmmpLKppqSyqaaksqmmpLKppzM4KV8zOClfMzgpXQtdlVELXZVRC12VU69RAVevUQFXr1EBVg/YiWIP2IliD9iJY39w/Sd/cP0nf3D9JUP8RW1D/EVtQ/xFbrv5JWq7+SVqu/klaPPPiWjzz4lo88+JaR8K1UkfCtVJHwrVSA/lySAP5ckgD+XJIEf8VWxH/FVsR/xVbpfXFsKX1xbCl9cWwKfMLUSnzC1Ep8wtRsNzMS7DczEuw3MxLkOohV5DqIVeQ6iFXKeseTCnrHkwp6x5M")
+}]
+blend_shape_mode = 0
