@@ -16,6 +16,7 @@ config/name_localized={
 "zh": "圣战"
 }
 config/version="1.0.0"
+run/main_scene="res://Scenes/Game.tscn"
 config/features=PackedStringArray("4.3", "C#", "Forward Plus")
 config/icon="res://icon.svg"
 

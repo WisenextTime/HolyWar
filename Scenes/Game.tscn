@@ -1,10 +1,39 @@
-[gd_scene load_steps=2 format=3 uid="uid://du2phrp105dey"]
+[gd_scene load_steps=6 format=3 uid="uid://du2phrp105dey"]
 
-[ext_resource type="Script" path="res://Scripts/Game.cs" id="1_0vqqe"]
+[ext_resource type="Script" path="res://Scripts/Game/DebugGame_Map.cs" id="1_yt5op"]
+[ext_resource type="Script" path="res://Scripts/Game/GameMap.cs" id="2_i0pyb"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_yn66b"]
+sky_top_color = Color(0, 0.85625, 0.792031, 1)
+sky_horizon_color = Color(0.5, 0.837485, 0.823789, 1)
+ground_bottom_color = Color(0, 0.493691, 0.503125, 1)
+ground_horizon_color = Color(0.5, 0.837485, 0.823789, 1)
+
+[sub_resource type="Sky" id="Sky_86oe0"]
+sky_material = SubResource("ProceduralSkyMaterial_yn66b")
+
+[sub_resource type="Environment" id="Environment_2ruds"]
+background_mode = 2
+sky = SubResource("Sky_86oe0")
+tonemap_mode = 2
+glow_enabled = true
 
 [node name="Game" type="Node"]
-script = ExtResource("1_0vqqe")
+script = ExtResource("1_yt5op")
+
+[node name="Environment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_2ruds")
+
+[node name="Light" type="DirectionalLight3D" parent="."]
+transform = Transform3D(-0.866023, -0.433016, 0.250001, 0, 0.499998, 0.866027, -0.500003, 0.749999, -0.43301, 0, 0, 0)
+visible = false
+shadow_enabled = true
+metadata/_edit_lock_ = true
 
 [node name="Players" type="Node" parent="."]
 
 [node name="Map" type="Node" parent="."]
+script = ExtResource("2_i0pyb")
+
+[node name="Camera" type="Camera3D" parent="."]
+transform = Transform3D(-1, 8.60946e-08, -1.51808e-08, 0, 0.173648, 0.984808, 8.74228e-08, 0.984808, -0.173648, 0, 10, 0)

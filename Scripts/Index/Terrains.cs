@@ -154,6 +154,52 @@ public static class Terrains
 					IsUnbuildable = true,
 					DefenseBonus = -0.1f
 				}
+			},
+			{
+				"Marsh", new TerrainFeature("Marsh")
+				{
+					Color = default,
+					Mesh = ResourceLoader.Load<Mesh>("res://Assets/Models/Tiles/Marsh.tres"),
+					Produces = { { "Food", -1 } },
+					DefenseBonus = -0.15f,
+					IsUnbuildable = true,
+					IsRare = true,
+					MovementCost = 3,
+					OccursOn = ["Grassland"]
+				}
+			},
+			{
+				"FloodPlain", new TerrainFeature("FloodPlain")
+				{
+					Color = default,
+					Mesh = ResourceLoader.Load<Mesh>("res://Assets/Models/Tiles/Flood.tres"),
+					Produces = { { "Food", 2 } },
+					DefenseBonus = -0.1f,
+					OccursOn = ["Desert"]
+				}
+			},
+			{
+				"Jungle", new TerrainFeature("Jungle")
+				{
+					Color = default,
+					Mesh = ResourceLoader.Load<Mesh>("res://Assets/Models/Tiles/Jungle.tres"),
+					Produces = { { "Food", 2 } },
+					IsRoughArea = true,
+					OverwritingProduces = true,
+					OccursOn = ["Tundra", "Plain", "Grassland", "Hill"],
+					MovementCost = 2,
+					DefenseBonus = 0.25f
+				}
+			},
+			{
+				"River", new River("River")
+				{
+					Color = new Color("#00EEFF"),
+					IsFreshWater = true,
+					Produces = { { "Gold", 1 } },
+					MovementCost = 0,
+					DefenseBonus = -0.2f,
+				}
 			}
 		};
 

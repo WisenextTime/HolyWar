@@ -1,10 +1,6 @@
-[gd_scene load_steps=3 format=3 uid="uid://d1cuj43jg6o7x"]
+[gd_scene load_steps=2 format=3 uid="uid://d1cuj43jg6o7x"]
 
-[ext_resource type="CylinderMesh" uid="uid://deenxcuwvjc5" path="res://Assets/Models/Tiles/Desert.tres" id="1_6ai8h"]
-[ext_resource type="ArrayMesh" uid="uid://d2ig1106agcx2" path="res://Assets/Models/Tiles/Oasis.tres" id="2_xpmwa"]
+[ext_resource type="CylinderMesh" uid="uid://ccagxvvwnce3t" path="res://Assets/Models/Tiles/Plain.tres" id="1_7kflh"]
 
 [node name="Tile" type="MeshInstance3D"]
-mesh = ExtResource("1_6ai8h")
-
-[node name="Oasis" type="MeshInstance3D" parent="."]
-mesh = ExtResource("2_xpmwa")
+mesh = ExtResource("1_7kflh")

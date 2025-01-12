@@ -43,3 +43,8 @@ public record TerrainFeature : Terrain
 	public bool OverwritingProduces = false;
 	public List<string> OccursOn = [];
 }
+
+public record River : TerrainFeature
+{ 
+	public River(string Name) : base(Name) { }
+}

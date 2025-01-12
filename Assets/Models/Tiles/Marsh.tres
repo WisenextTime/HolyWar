@@ -1,0 +1,21 @@
+[gd_resource type="ArrayMesh" load_steps=2 format=4 uid="uid://kw1rj8m58bgu"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_iq102"]
+resource_name = "none"
+albedo_color = Color(0, 0.34375, 0.311523, 1)
+
+[resource]
+_surfaces = [{
+"aabb": AABB(-0.625, 0.0625, -0.625, 1.25, 1e-05, 1.25),
+"attribute_data": PackedByteArray("/8//z//f/8//z//f/9//3//P/+//3//v/8//j//f/4//z/+f/9//n//P/3//3/9//8//v//f/7//z////9////+v////n////6//7/+f/+//r//f/5//3/+v/8//n//P/6//v/+f/7//r/+v/5//r/+v/5//n/+f/+//3//v/8//7//v/+/////v/7//7/+v/9//r//v/5//7/+P/+//f/+P/+//j////4//3/+P/8//j/+f/4//r/+P/4//n/+P/4//f/+f/3//f//v/3//3/9//5//f/+P/3//f/+//7//v//P/7//r/+//+//v//f////z////9/////v////j////5//f/9//4//f/9//4//f/9//4//f/+P/4//j/+P/3//f/+P/3//j/+P/3//j/+P/3//j/9//4//j/9//4//j/9//4//j/9//3//j/+P/3//f/+P/3//f/9//3//f/9//3//n/+P/3//j/+f/3//j/+P/3//j/9//3//j/9//3//j/9//3//j/9//4//j/9//3//j/+P/3//j/9//3//f5mJ/3//f/+PmZn/f/+P/3//f/+P/4//f/9//4//f/9//6//j/9//4//n/9//5//j/+P/3//j/9//38="),
+"format": 34896613399,
+"index_count": 258,
+"index_data": PackedByteArray("AAABAAIAAgABAAMAAgADAAQABAADAAUABgAHAAgACAAHAAkACgALAAYABgALAAcADAANAAAAAAANAAEABAAFAA4ADgAFAA8AEAARABIAEgARABMAEgATABQAFAATABUAFAAVABYAFgAVABcAFgAXABgAGAAXABkAGAAZABoAGgAZABsAGgAbABwAHAAbAB0AHgADAB8AHwADAAEAIAAFAB4AHgAFAAMAIQAPACAAIAAPAAUAHwABACIAIgABAA0AIwAkACUAJQAkAAkAJQAJACYAJgAJAAcAJgAHACcAJwAHAAsAKAATACkAKQATABEAKgAVACgAKAAVABMAKwAXACoAKgAXABUALAAdAC0ALQAdABsALgAvACwALAAvAB0AMAAxAC4ALgAxAC8AKAAyACoAKgAyADMALAA0AC4ALgA0ADUALgA1ADAAMAA1ADYAGAA3ABYAFgA3ADgAGgA5ABgAGAA5ADcABAA6AAIAAgA6ADsAHwA8AB4AHgA8AD0AHgA9ACAAIAA9AD4AJgA/ACUAJQA/AEAAQQBCAEMARABFAEYARwBIAEkASgBLAEwATQBOAE8AUABRAFIAUwBUAFUAVgBXAFgAWQBaAFsAXABdAF4AXwBgAGEAYgBjAGQAZQBmAGcAaABpAGoAawBsAG0AbgBvAHAAcQByAHMAdAB1AHYA"),
+"material": SubResource("StandardMaterial3D_iq102"),
+"name": "none",
+"primitive": 3,
+"uv_scale": Vector4(2.5, 2.5, 0, 0),
+"vertex_count": 119,
+"vertex_data": PackedByteArray("/58AAP+f/7//vwAA/5//v/+fAAD/v/+//78AAP+//7//nwAA/9//v/+/AAD/3/+//58AAP8f/7//vwAA/x//v/+fAAD/P/+//78AAP8//7//nwAAAAD/v/+/AAAAAP+//58AAP9//7//vwAA/3//v/+fAAD///+//78AAP///7//XwAA////v/8/AAD///+//18AAP/f/7//PwAA/9//v/9fAAD/v/+//z8AAP+//7//XwAA/5//v/8/AAD/n/+//18AAP9//78zMwAA/3//v/9fAAD/X/+//z8AAP9f/7//XwAA/z//v/8/AAD/P/+//98AAP+//7//3wAA/5//v//fAAD/3/+//98AAP///7//3wAA/3//v//fAAD/X/+//78AAP9f/7//3wAA/z//v//fAAD/H/+//98AAAAA/7//HwAA/9//v/8fAAD///+//x8AAP+//7//HwAA/5//v/8fAAD/P/+//x8AAP9f/7//HwAA/x8JwP8/AAD/H/+//x8AAAAAQsD/PwAAzAxSwAAAAAD/3/+/AAAAAP+//78AAAAA/z//vwAAAAD/HwTAzAwAAMwMbMP/fwAA/3//v/9/AAD/n/+//38AAP9f/7//fwAA/9//v/9/AAD/v/+///8AAP+f/7///wAA/7//v///AAD/3/+///8AAP8f/7///wAA/z//v//fAAD/3/+///8AAP/f/7//3wAA////v/9/AAD/3/+//58AAP/f/7//nwAA////v/8fAAD///+/AAAAAP/f/7//HwAA/9//v/8fAAD/v/+/AAAAAP+//7//HwAA/5//vzMzAAD/f/+//z8AAP+f/7//HwAA/5//v/8/AAD/X/+/MzMAAP9//7//HwAA/1//v/8fAAD/X/+/AAAAAP8//7//HwAA/z//v/+fAAD/H/+//58AAP8//7+ZeQAA/x//v/+fAAD/H/+/mXkAAP8f/7//nwAAAAD/v///AAD/H/+//98AAP8f/7//3wAAAAD/v///AAD/P/+//98AAP9f/7//3wAA/z//v/+/AAD/P/+//78AAP9f/7//nwAA/z//v/9/AAD/X/+//18AAP9f/7//XwAA/z//v/8/AAD/H/+//z8AAMwM/7//XwAA/z//v/8/AAD/P/+//z8AAP8f/7//XwAA/z//v/9fAAD/n/+//38AAP+f/7//XwAA////v/+fAAD/f/+//58AAP+//7//fwAA/7//v///AAD/n/+//98AAP+f/7//3wAA/3//v////3////9/////f////3////9/////f////3////9/////f////3////9/////f////3////9/////f////3////9/////f////3////9/////f////3////9/////f////3////9/////f////3////9/////f////3////9/////f////3////9/////f////3////9/////f////3////9/////f////3////9/////f////3+S+LWD////f0Pu3Yh67MGJ////f////3////9/Vf2retvnuE////9/////f////3////9/////f////3////9/////f////3////9/////f////3////9/////f////3////9/////f////3////9/////f////3////9/////f////3////9/////f////3////9/////f////3////9/////f////3////9/////f////3////9/////f////3////9/////f////3////9/////f////3////9/////f////3////9/////f////3////9/////f////3////9/////f////3////9/////f////3////9/////f////3////9/")
+}]
+blend_shape_mode = 0
