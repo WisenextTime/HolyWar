@@ -9,8 +9,8 @@ public partial class DebugGame_Map : Game
 	private bool _mouseLeftButtonPressed = false;
 	public override void _Ready()
 	{
-		var map = new Map(20);
-		map.InitTiles();
+		var generator = new DefaultMapGenerator();
+		var map = generator.Generate();
 		GameMap.Map = map;
 		GameMap.DrawMap();
 		Camera.Position = new Vector3(map.Size * 1.732f, 10, 0);

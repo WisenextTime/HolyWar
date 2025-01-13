@@ -5,10 +5,11 @@ using HolyWar.Scripts.Core;
 
 namespace HolyWar.Scripts.Maps;
 
-public struct MapTile()
+public record MapTile()
 {
 	public string MainTerrain = "Void";
 	public List<string> Features = [];
+	public List<string> Resource = [];
 	public List<string> Improvements = []; 
 	public Dictionary<string, int> Produces = [];
 	public float DefenseBonus = 0;

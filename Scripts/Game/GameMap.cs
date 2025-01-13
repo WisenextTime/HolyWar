@@ -12,6 +12,7 @@ public partial class GameMap : Node
 
 	private static readonly Func<Vector2,Vector3> ToRenderCoord = coord =>
 		new Vector3(0.5f * (2 * coord.Y + float.Abs(coord.X)) * 1.732f, 0, coord.X * 1.5f);
+	
 	public void DrawMap()
 	{
 		if (Map == null) return;
