@@ -16,20 +16,27 @@ public partial class GameMap : Node
 	public void DrawMap()
 	{
 		if (Map == null) return;
-		for (var x = -Map.Size + 1; x < Map.Size; x++)
-		{
-			var y = 0;
-			foreach (var tile in Map.Tiles[x + Map.Size - 1])
-			{
-				var coord = new Vector2(x, y);
-				y++;
-				var tileScene = TileScene.Instantiate<MeshInstance3D>();
-				tileScene.Position = ToRenderCoord(coord);
-				tileScene.Mesh = Globals.Global.Terrains[tile.MainTerrain].Mesh;
-				AddChild(tileScene);
-			}
+		// for (var x = -Map.Size + 1; x < Map.Size; x++)
+		// {
+		// 	var y = 0;
+		// 	foreach (var tile in Map.Tiles[x + Map.Size - 1])
+		// 	{
+		// 		var coord = new Vector2(x, y);
+		// 		y++;
+		// 		var tileScene = TileScene.Instantiate<MeshInstance3D>();
+		// 		tileScene.Position = ToRenderCoord(coord);
+		// 		tileScene.Mesh = Globals.Global.Terrains[tile.MainTerrain].Mesh;
+		// 		AddChild(tileScene);
+		// 	}
 
 			//GD.Print(string.Join(',', Map.Tiles[x + Map.Size - 1].Select(t => t.MainTerrain)));
+		//}
+		foreach (var kvp in Map.Tiles)
+		{
+			var tileScene = TileScene.Instantiate<MeshInstance3D>();
+			tileScene.Position = ToRenderCoord(kvp.Key);
+			tileScene.Mesh = Globals.Global.Terrains[kvp.Value.MainTerrain].Mesh;
+			AddChild(tileScene);
 		}
 	}
 }
