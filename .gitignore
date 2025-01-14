@@ -1,3 +1,8 @@
 # Godot 4+ specific ignores
 .godot/
 /android/
+.idea/.idea.HolyWar/.idea/indexLayout.xml
+.idea/.idea.HolyWar/.idea/libraries/GdSdk_Master.xml
+.idea/.idea.HolyWar/.idea/encodings.xml
+HolyWar.sln.DotSettings.user
+.idea/.idea.HolyWar/.idea/vcs.xml
