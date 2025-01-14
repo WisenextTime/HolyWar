@@ -153,7 +153,7 @@ public class DefaultMapGenerator(
 								edgeTiles.Add(pos);
 						}
 						fixedTiles.AddRange(changeList);
-						if(edgeTiles.All(t => map.GetTile(t).IsLand()))
+						if(edgeTiles.All(t => map.GetTile(t).MainTerrain == "Grassland"))
 							foreach (var changeTile in changeList)
 								map.GetTile(changeTile).MainTerrain = "Lake";
 						if(edgeTiles.All(t => map.GetTile(t).MainTerrain == "Ocean"))
