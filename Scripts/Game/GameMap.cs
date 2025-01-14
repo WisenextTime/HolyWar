@@ -39,10 +39,13 @@ public partial class GameMap : Node
 			tileScene.Mesh = Globals.Global.Terrains[kvp.Value.MainTerrain].Mesh;
 			foreach (var feature in kvp.Value.Features)
 			{
+				//TODO
 				if (Globals.Global.Terrains[feature] is River) continue;
+				if (Globals.Global.Terrains[feature] is LargeRiver) continue;
 				var featureScene = TileScene.Instantiate<MeshInstance3D>();
 				featureScene.Mesh = Globals.Global.Terrains[feature].Mesh;
-				if (feature == "Hill")
+				var featureSource = (TerrainFeature)Globals.Global.Terrains[feature];
+				if (featureSource.MaterialSameAs)
 				{
 					featureScene.MaterialOverride = tileScene.Mesh.SurfaceGetMaterial(0);
 				}

@@ -39,6 +39,7 @@ public class DefaultMapGenerator(
 	private readonly float _maxTemperature = maxTemperature;
 	private readonly float _temperatureVariation = temperatureVariation;
 	private readonly float _elevation = elevation;
+	private readonly float _vegetation = vegetation;
 
 	public override Map Generate()
 	{
@@ -59,6 +60,7 @@ public class DefaultMapGenerator(
 			Size = _size,
 			Seed = Seed,
 		};
+		var rand = new Random(Seed);
 		map.InitTiles();
 		//Init land and ocean
 		foreach (var kvp in map.Tiles)
@@ -72,7 +74,7 @@ public class DefaultMapGenerator(
 				kvp.Value.MainTerrain = "Grassland";
 		}
 
-		// Fix coast line and gen lakes
+		// Fix coastline and gen lakes
 		var fixedTiles = new List<Vector2I>();
 		foreach (var kvp in map.Tiles.Where(kvp => !fixedTiles.Contains(kvp.Key)))
 		{
@@ -119,7 +121,7 @@ public class DefaultMapGenerator(
 			}
 		}
 		
-		// Gen more terrain
+		// Gen more terrains
 		foreach (var kvp in map.Tiles)
 		{
 			noise.SetOffset(new Vector3(100, 100, 100));
@@ -130,6 +132,7 @@ public class DefaultMapGenerator(
 					-1, 1);
 			noise.SetOffset(new Vector3(-100, -100, -100));
 			var humidity = noise.GetNoise2Dv(kvp.Key);
+			
 			var height = highFrequencyNoisy.GetNoise2Dv(kvp.Key) / _elevation - (1 - _elevation);
 			
 			if (kvp.Value.MainTerrain == "Grassland")
@@ -143,9 +146,9 @@ public class DefaultMapGenerator(
 					(>= 0.4f, < 0.3f) => "Desert",
 					(_, _) => "Grassland"
 				};
+				//Hills and mountains
 				switch (height)
 				{
-					//Hills and mountains
 					case > 0.3f:
 						kvp.Value.MainTerrain = "Mountain";
 						break;
@@ -153,10 +156,43 @@ public class DefaultMapGenerator(
 						kvp.Value.Features.Add("Hill");
 						break;
 				}
+				//Gen vegetation
+				highFrequencyNoisy.SetOffset(new Vector3(-500, -500, -500));
+				var vegetation = (highFrequencyNoisy.GetNoise2Dv(kvp.Key) + 1) / 2;
+				if(kvp.Value.MainTerrain == "Mountain" || vegetation > _vegetation) continue;
+				switch (temperature)
+				{
+					case > 0.3f when kvp.Value.MainTerrain is "Grassland" or "Plain":
+						kvp.Value.Features.Add("Jungle");
+						break;
+					case >-1 when kvp.Value.MainTerrain is not "Desert" and not "Snow":
+						kvp.Value.Features.Add("Forest");
+						break;
+				}
+				
 			}
 			else if (kvp.Value.IsWater() && temperature < -0.6f)
 				kvp.Value.Features.Add("Ice");
-			//Rare feature
+		}
+		
+		//Gen rivers
+		//TODO
+		
+		//The first sync
+		foreach (var kvp in map.Tiles)
+		{
+			kvp.Value.Sync();
+		}
+		
+		//Rare feature
+		foreach (var rareFeature in Globals.Global.Terrains.Where(pair => pair.Value is TerrainFeature { IsRare: true }))
+		{
+			var feature = (TerrainFeature)rareFeature.Value;
+			foreach (var occursTile in map.Tiles.Where(t => feature.OccursOn.Contains(t.Value.MainTerrain)))
+			{
+				if (rand.NextSingle() > feature.RareRate || occursTile.Value.Features.Count != 0) continue;
+				occursTile.Value.Features.Add(feature.Name);
+			}
 		}
 
 		return map;

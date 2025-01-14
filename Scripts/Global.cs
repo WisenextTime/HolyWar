@@ -12,4 +12,7 @@ public class Globals
 	public static Globals Global => field ??= new Globals();
 
 	public Dictionary<string, Terrain> Terrains;
+
+	//TODO
+	public static readonly List<string> RiverNames = [];
 }

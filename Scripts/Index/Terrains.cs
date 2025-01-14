@@ -115,7 +115,8 @@ public static class Terrains
 					IsRoughArea = true,
 					OccursOn = ["Tundra", "Plain", "Grassland", "Desert", "Snow"],
 					MovementCost = 2,
-					DefenseBonus = 0.25f
+					DefenseBonus = 0.25f,
+					MaterialSameAs = true
 
 				}
 			},
@@ -185,6 +186,8 @@ public static class Terrains
 					Mesh = ResourceLoader.Load<Mesh>("res://Assets/Models/Tiles/Flood.tres"),
 					Produces = { { "Food", 2 } },
 					DefenseBonus = -0.1f,
+					IsRare = true,
+					OnlyOnFreshWater = true,
 					OccursOn = ["Desert"]
 				}
 			},
@@ -196,7 +199,7 @@ public static class Terrains
 					Produces = { { "Food", 2 } },
 					IsRoughArea = true,
 					OverwritingProduces = true,
-					OccursOn = ["Tundra", "Plain", "Grassland", "Hill"],
+					OccursOn = ["Plain", "Grassland", "Hill"],
 					MovementCost = 2,
 					DefenseBonus = 0.25f
 				}

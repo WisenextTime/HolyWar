@@ -16,7 +16,6 @@ public record Terrain(string Name)
 	public bool IsRoughArea = false;
 	public bool PreventingFreshWater = false;
 	public bool IsFreshWater = false;
-	public bool IsRare = false;
 	public bool IsUnbuildable = false;
 	
 	//only effort when this terrain is 'Water'
@@ -36,6 +35,10 @@ public record Terrain(string Name)
 
 public record TerrainFeature : Terrain
 {
+	public float RareRate = 0.1f;
+	public bool IsRare = false;
+	public bool MaterialSameAs = false;
+	public bool OnlyOnFreshWater = false;
 	public TerrainFeature(string Name) : base(Name)
 	{
 		Type = TileType.Empty;
@@ -45,6 +48,12 @@ public record TerrainFeature : Terrain
 }
 
 public record River : TerrainFeature
-{ 
+{
 	public River(string Name) : base(Name) { }
+}
+
+public record LargeRiver : TerrainFeature
+{
+	public int RiverId = 0;
+	public LargeRiver(string Name) : base(Name) { }
 }
