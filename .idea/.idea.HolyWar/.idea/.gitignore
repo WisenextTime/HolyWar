@@ -6,6 +6,10 @@
 /.idea.HolyWar.iml
 /modules.xml
 /contentModel.xml
+/.idea.HolyWar.iml
+/modules.xml
+/contentModel.xml
+/projectSettingsUpdater.xml
 # 基于编辑器的 HTTP 客户端请求
 /httpRequests/
 # Datasource local storage ignored files

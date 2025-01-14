@@ -13,7 +13,7 @@ public partial class GameMap : Node
 
 	private static readonly Func<Vector2,Vector3> ToRenderCoord = coord =>
 		new Vector3(0.5f * (2 * coord.Y + float.Abs(coord.X)) * 1.732f, 0, coord.X * 1.5f);
-	
+
 	public void DrawMap()
 	{
 		if (Map == null) return;
@@ -32,12 +32,12 @@ public partial class GameMap : Node
 
 			//GD.Print(string.Join(',', Map.Tiles[x + Map.Size - 1].Select(t => t.MainTerrain)));
 		//}
-		foreach (var kvp in Map.Tiles)
+		foreach (var (pos,tile) in Map.Tiles)
 		{
 			var tileScene = TileScene.Instantiate<MeshInstance3D>();
-			tileScene.Position = ToRenderCoord(kvp.Key);
-			tileScene.Mesh = Globals.Global.Terrains[kvp.Value.MainTerrain].Mesh;
-			foreach (var feature in kvp.Value.Features)
+			tileScene.Position = ToRenderCoord(pos);
+			tileScene.Mesh = Globals.Global.Terrains[tile.MainTerrain].Mesh;
+			foreach (var feature in tile.Features)
 			{
 				//TODO
 				if (Globals.Global.Terrains[feature] is River) continue;

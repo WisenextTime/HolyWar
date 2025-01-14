@@ -63,6 +63,13 @@ texture={
 "roughness/src_normal": ""
 }
 
+[layer_names]
+
+3d_render/layer_1="层 1"
+3d_render/layer_2="TileMask"
+3d_render/layer_3="层 3"
+3d_render/layer_20="AfterEffects"
+
 [rendering]
 
 textures/canvas_textures/default_texture_filter=0

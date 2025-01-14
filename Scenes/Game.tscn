@@ -1,7 +1,9 @@
-[gd_scene load_steps=6 format=3 uid="uid://du2phrp105dey"]
+[gd_scene load_steps=15 format=3 uid="uid://du2phrp105dey"]
 
 [ext_resource type="Script" path="res://Scripts/Game/DebugGame_Map.cs" id="1_yt5op"]
 [ext_resource type="Script" path="res://Scripts/Game/GameMap.cs" id="2_i0pyb"]
+[ext_resource type="Shader" path="res://Assets/Shaders/TileLine.gdshader" id="3_72630"]
+[ext_resource type="Script" path="res://GdScripts/sync_camera.gd" id="4_rc8wr"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_yn66b"]
 sky_top_color = Color(0, 0.85625, 0.792031, 1)
@@ -18,8 +20,52 @@ sky = SubResource("Sky_86oe0")
 tonemap_mode = 2
 glow_enabled = true
 
-[node name="Game" type="Node"]
+[sub_resource type="ViewportTexture" id="ViewportTexture_bes02"]
+viewport_path = NodePath("TileMaskViewport")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_oklax"]
+resource_local_to_scene = true
+render_priority = 0
+shader = ExtResource("3_72630")
+shader_parameter/LineColor = Color(0.2, 0.2, 0.2, 0.8)
+shader_parameter/LineWidth = 0.01
+shader_parameter/TileMaskLayer = SubResource("ViewportTexture_bes02")
+
+[sub_resource type="SphereMesh" id="SphereMesh_v5v48"]
+resource_local_to_scene = true
+material = SubResource("ShaderMaterial_oklax")
+flip_faces = true
+radius = 2.0
+height = 4.0
+
+[sub_resource type="GDScript" id="GDScript_ilnjl"]
+resource_name = "TileViewPort"
+script/source = "extends SubViewport
+
+# Called when the node enters the scene tree for the first time.
+func _ready():
+	var main_viewport : Viewport = get_parent().get_viewport()
+	var update_size = func():
+		self.size = main_viewport.get_visible_rect().size
+	update_size.call()
+	main_viewport.size_changed.connect(update_size)
+	pass # Replace with function body.
+"
+
+[sub_resource type="BoxMesh" id="BoxMesh_ruvcv"]
+size = Vector3(2, 2, 2)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_m7lqa"]
+transparency = 1
+albedo_color = Color(1, 1, 1, 0.490196)
+
+[sub_resource type="BoxMesh" id="BoxMesh_bmv7c"]
+material = SubResource("StandardMaterial3D_m7lqa")
+size = Vector3(3, 3, 3)
+
+[node name="Game" type="Node" node_paths=PackedStringArray("Camera")]
 script = ExtResource("1_yt5op")
+Camera = NodePath("Camera")
 
 [node name="Environment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_2ruds")
@@ -35,4 +81,38 @@ metadata/_edit_lock_ = true
 script = ExtResource("2_i0pyb")
 
 [node name="Camera" type="Camera3D" parent="."]
-transform = Transform3D(-1, -8.21506e-08, 2.99004e-08, 0, 0.34202, 0.939693, -8.74228e-08, 0.939693, -0.34202, 0, 10, 0)
+transform = Transform3D(-1, -8.21506e-08, 2.99003e-08, 0, 0.34202, 0.939693, -8.74228e-08, 0.939693, -0.34202, 0, 10, 0)
+cull_mask = 524289
+
+[node name="TileLine" type="MeshInstance3D" parent="Camera"]
+transform = Transform3D(1, -7.10543e-15, 3.55271e-15, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+layers = 524289
+mesh = SubResource("SphereMesh_v5v48")
+
+[node name="TileMaskViewport" type="SubViewport" parent="."]
+transparent_bg = true
+debug_draw = 1
+render_target_update_mode = 4
+script = SubResource("GDScript_ilnjl")
+
+[node name="Camera2" type="Camera3D" parent="TileMaskViewport" node_paths=PackedStringArray("Target")]
+transform = Transform3D(-1, -8.21506e-08, 2.99003e-08, 0, 0.34202, 0.939693, -8.74228e-08, 0.939693, -0.34202, 0, 10, 0)
+cull_mask = 2
+script = ExtResource("4_rc8wr")
+Target = NodePath("../../Camera")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 19.5929, 2, 6.64302)
+layers = 3
+mesh = SubResource("BoxMesh_ruvcv")
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 19.5929, 2, 6.64302)
+layers = 3
+mesh = SubResource("BoxMesh_bmv7c")
+
+[node name="TextureRect" type="TextureRect" parent="."]
+offset_right = 225.0
+offset_bottom = 151.0
+texture = SubResource("ViewportTexture_bes02")
+expand_mode = 1
