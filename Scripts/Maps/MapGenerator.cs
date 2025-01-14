@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using Godot;
@@ -23,7 +24,7 @@ public abstract class MapGenerator(int Size = 25,int seed = default,
 }
 // Based on Perlin Noise
 public class DefaultMapGenerator(
-	int size = 55,
+	int size = 35,
 	int seed = default,
 	float elevation = 0.70f,
 	float maxTemperature = 0.60f,
@@ -35,6 +36,9 @@ public class DefaultMapGenerator(
 {
 	private readonly float _seaLevel = seaLevel - 0.05f;
 	private readonly int _size = size;
+	private readonly float _maxTemperature = maxTemperature;
+	private readonly float _temperatureVariation = temperatureVariation;
+	private readonly float _elevation = elevation;
 
 	public override Map Generate()
 	{
@@ -43,6 +47,12 @@ public class DefaultMapGenerator(
 			Seed = Seed,
 			NoiseType = FastNoiseLite.NoiseTypeEnum.Perlin,
 			Frequency = 0.015f
+		};
+		var highFrequencyNoisy = new FastNoiseLite
+		{
+			Seed = Seed,
+			NoiseType = FastNoiseLite.NoiseTypeEnum.Perlin,
+			Frequency = 0.3f
 		};
 		var map = new Map
 		{
@@ -62,66 +72,7 @@ public class DefaultMapGenerator(
 				kvp.Value.MainTerrain = "Grassland";
 		}
 
-		// //Fix coast line and gen lakes
-		// var fixedTiles = new List<Vector2I>();
-		// foreach (var column in map.Tiles.Index())
-		// {
-		// 	foreach (var tile in column.Item.Index())
-		// 	{
-		// 		var coord = map.TileToWorld(new Vector2I(column.Index, tile.Index));
-		// 		if(fixedTiles.Contains(coord)) continue;
-		// 		fixedTiles.Add(coord);
-		// 		switch (tile.Item.MainTerrain)
-		// 		{
-		// 			case "Ocean" when
-		// 				map.GetNeighbors(coord.X, coord.Y).Any(t => t.IsLand()):
-		// 				tile.Item.MainTerrain = "Coast";
-		// 				continue;
-		// 			case "Coast":
-		// 			{
-		// 				var searchList = new List<Vector2I> { coord };
-		// 				var changeList = new List<MapTile> { tile.Item };
-		// 				var edgeTiles = new List<MapTile>();
-		// 				while (searchList.Count != 0)
-		// 				{
-		// 				
-		// 					var nowCoord = searchList[0];
-		// 					foreach (var neighbor in map.GetNeighbors(nowCoord.X, nowCoord.Y))
-		// 					{
-		// 						if (neighbor.MainTerrain == "Coast" &&
-		// 						    !searchList.Contains(map.GetTileCoord(neighbor)) &&
-		// 						    !fixedTiles.Contains(map.GetTileCoord(neighbor)))
-		// 						{
-		// 							searchList.Add(map.GetTileCoord(neighbor));
-		// 							fixedTiles.Add(map.GetTileCoord(neighbor));
-		// 							changeList.Add(neighbor);
-		// 						}
-		// 						else if (neighbor.MainTerrain != "Coast" && neighbor.MainTerrain != "Void" && !edgeTiles.Contains(neighbor))
-		// 							edgeTiles.Add(neighbor);
-		// 					}
-		// 					searchList.Remove(nowCoord);
-		// 				}
-		//
-		// 				if (edgeTiles.All(t => t.IsLand()))
-		// 				{
-		// 					foreach (var mapTile in changeList)
-		// 					{
-		// 						mapTile.MainTerrain = "Lake";
-		// 					}
-		// 				}
-		// 				else if (edgeTiles.All(t => t.MainTerrain == "Ocean"))
-		// 				{
-		// 					foreach (var mapTile in changeList)
-		// 					{
-		// 						mapTile.MainTerrain = "Ocean";
-		// 					}
-		// 				}
-		//
-		// 				break;
-		// 			}
-		// 		}
-		// 	}
-		// }
+		// Fix coast line and gen lakes
 		var fixedTiles = new List<Vector2I>();
 		foreach (var kvp in map.Tiles.Where(kvp => !fixedTiles.Contains(kvp.Key)))
 		{
@@ -144,27 +95,68 @@ public class DefaultMapGenerator(
 						foreach (var neighbor in map.GetNeighbors(nowSearch))
 						{
 							var pos = map.GetTileCoord(neighbor);
-							if(!changeList.Contains(pos) && neighbor.MainTerrain == "Coast")
+							if (!changeList.Contains(pos) && neighbor.MainTerrain == "Coast")
 							{
 								changeList.Add(pos);
 								searchList.Add(pos);
 							}
-							else if(neighbor.MainTerrain is "Ocean" or "Grassland" && !edgeTiles.Contains(pos))
+							else if (neighbor.MainTerrain is "Ocean" or "Grassland" && !edgeTiles.Contains(pos)) 
 								edgeTiles.Add(pos);
-						}
-						fixedTiles.AddRange(changeList);
-						if(edgeTiles.All(t => map.GetTile(t).MainTerrain == "Grassland"))
-							foreach (var changeTile in changeList)
-								map.GetTile(changeTile).MainTerrain = "Lake";
-						if(edgeTiles.All(t => map.GetTile(t).MainTerrain == "Ocean"))
-							foreach (var changeTile in changeList)
-								map.GetTile(changeTile).MainTerrain = "Ocean";
 							
-						searchList.Remove(nowSearch);
+							searchList.Remove(nowSearch);
+						}
 					}
+					fixedTiles.AddRange(changeList);
+					if (edgeTiles.All(t => map.GetTile(t).MainTerrain == "Grassland"))
+						foreach (var changeTile in changeList)
+							map.GetTile(changeTile).MainTerrain = "Lake";
+					if (edgeTiles.All(t => map.GetTile(t).MainTerrain == "Ocean"))
+						foreach (var changeTile in changeList)
+							map.GetTile(changeTile).MainTerrain = "Ocean";
+
 					break;
 				}
 			}
+		}
+		
+		// Gen more terrain
+		foreach (var kvp in map.Tiles)
+		{
+			noise.SetOffset(new Vector3(100, 100, 100));
+			var temperature =
+				float.Clamp(
+					_maxTemperature - (_temperatureVariation + 1f / (_size * 0.8f)) * float.Abs(kvp.Key.X) +
+					noise.GetNoise2Dv(kvp.Key),
+					-1, 1);
+			noise.SetOffset(new Vector3(-100, -100, -100));
+			var humidity = noise.GetNoise2Dv(kvp.Key);
+			var height = highFrequencyNoisy.GetNoise2Dv(kvp.Key) / _elevation - (1 - _elevation);
+			
+			if (kvp.Value.MainTerrain == "Grassland")
+			{
+				kvp.Value.MainTerrain = (temperature, humidity) switch
+				{
+					(< -0.5f, _) => "Snow",
+					(< -0.4f, > 0) => "Snow",
+					(< -0.3f, _) => "Tundra",
+					(< 0.4f, < 0) => "Plain",
+					(>= 0.4f, < 0.3f) => "Desert",
+					(_, _) => "Grassland"
+				};
+				switch (height)
+				{
+					//Hills and mountains
+					case > 0.3f:
+						kvp.Value.MainTerrain = "Mountain";
+						break;
+					case > 0f:
+						kvp.Value.Features.Add("Hill");
+						break;
+				}
+			}
+			else if (kvp.Value.IsWater() && temperature < -0.6f)
+				kvp.Value.Features.Add("Ice");
+			//Rare feature
 		}
 
 		return map;

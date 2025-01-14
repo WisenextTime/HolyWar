@@ -1,6 +1,7 @@
 using System;
 using System.Linq;
 using Godot;
+using HolyWar.Scripts.Core;
 using HolyWar.Scripts.Maps;
 
 namespace HolyWar.Scripts.Game;
@@ -36,6 +37,17 @@ public partial class GameMap : Node
 			var tileScene = TileScene.Instantiate<MeshInstance3D>();
 			tileScene.Position = ToRenderCoord(kvp.Key);
 			tileScene.Mesh = Globals.Global.Terrains[kvp.Value.MainTerrain].Mesh;
+			foreach (var feature in kvp.Value.Features)
+			{
+				if (Globals.Global.Terrains[feature] is River) continue;
+				var featureScene = TileScene.Instantiate<MeshInstance3D>();
+				featureScene.Mesh = Globals.Global.Terrains[feature].Mesh;
+				if (feature == "Hill")
+				{
+					featureScene.MaterialOverride = tileScene.Mesh.SurfaceGetMaterial(0);
+				}
+				tileScene.AddChild(featureScene);
+			}
 			AddChild(tileScene);
 		}
 	}

@@ -133,6 +133,16 @@ public static class Terrains
 				}
 			},
 			{
+				"Ice", new TerrainFeature("Ice")
+				{
+					Color = default,
+					Mesh = ResourceLoader.Load<Mesh>("res://Assets/Models/Tiles/Ice.tres"),
+					OverwritingProduces = true,
+					IsImpassable = true,
+					OccursOn = ["Coast", "Ocean"],
+				}
+			},
+			{
 				"Atoll", new TerrainFeature("Atoll")
 				{
 					Color = default,
