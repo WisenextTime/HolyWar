@@ -5,6 +5,7 @@ using System.Linq;
 using Godot;
 using Godot.Collections;
 using HolyWar.Scripts.Core;
+using Array = Godot.Collections.Array;
 
 namespace HolyWar.Scripts.Maps;
 
@@ -40,21 +41,38 @@ public class DefaultMapGenerator(
 	private readonly float _temperatureVariation = temperatureVariation;
 	private readonly float _elevation = elevation;
 	private readonly float _vegetation = vegetation;
+	
+	private Array<Image> _noiseImage;
+	private Array<Image> _highFrequencyNoiseImage;
+
+	private void InitNoiseImage(FastNoiseLite noise)
+	{
+		noise.Frequency = 0.015f;
+		_noiseImage = noise.GetSeamlessImage3D(2 * _size + 2, 2 * size, 10);
+		noise.Frequency = 0.3f;
+		_highFrequencyNoiseImage = noise.GetSeamlessImage3D(2 * _size + 2, 2 * size, 10);
+	}
+
+	private float GetNoise(int x, int y, int z)
+	{
+		var noiseValue = _noiseImage[z].GetPixel(x, y).R;
+		return noiseValue * 2 - 1;
+	}
+	
+	private float GetNoise(Vector2I pos, int z) => GetNoise(pos.X, pos.Y, z);
+
+	private float GetHighFrequencyNoise(int x, int y, int z)
+	{
+		var noiseValue = _highFrequencyNoiseImage[z].GetPixel(x, y).R;
+		return noiseValue * 2 - 1;
+	}
+	
+	private float GetHighFrequencyNoise(Vector2I pos, int z) => GetHighFrequencyNoise(pos.X, pos.Y, z);
 
 	public override Map Generate()
 	{
-		var noise = new FastNoiseLite
-		{
-			Seed = Seed,
-			NoiseType = FastNoiseLite.NoiseTypeEnum.Perlin,
-			Frequency = 0.015f
-		};
-		var highFrequencyNoisy = new FastNoiseLite
-		{
-			Seed = Seed,
-			NoiseType = FastNoiseLite.NoiseTypeEnum.Perlin,
-			Frequency = 0.3f
-		};
+		var noise = new FastNoiseLite { Seed = Seed, NoiseType = FastNoiseLite.NoiseTypeEnum.Perlin};
+		InitNoiseImage(noise);
 		var map = new Map
 		{
 			Size = _size,
@@ -65,7 +83,7 @@ public class DefaultMapGenerator(
 		//Init land and ocean
 		foreach (var kvp in map.Tiles)
 		{
-			var seaNoise = noise.GetNoise2Dv(kvp.Key);
+			var seaNoise = GetNoise(kvp.Key, 0);
 			if (seaNoise < _seaLevel && seaNoise > _seaLevel - 0.02f)
 				kvp.Value.MainTerrain = "Coast";
 			else if (seaNoise <= _seaLevel - 0.02f)
@@ -124,24 +142,23 @@ public class DefaultMapGenerator(
 		// Gen more terrains
 		foreach (var kvp in map.Tiles)
 		{
-			noise.SetOffset(new Vector3(100, 100, 100));
 			var temperature =
 				float.Clamp(
-					_maxTemperature - (_temperatureVariation + 1f / (_size * 0.8f)) * float.Abs(kvp.Key.X) +
-					noise.GetNoise2Dv(kvp.Key),
+					_maxTemperature -
+					(_temperatureVariation + 1f / (_size * 0.8f)) * float.Abs(kvp.Key.Y - _size) +
+					GetNoise(kvp.Key,2)/2,
 					-1, 1);
-			noise.SetOffset(new Vector3(-100, -100, -100));
-			var humidity = noise.GetNoise2Dv(kvp.Key);
-			
-			var height = highFrequencyNoisy.GetNoise2Dv(kvp.Key) / _elevation - (1 - _elevation);
+			var humidity = GetNoise(kvp.Key, 5);
+
+			var height = GetHighFrequencyNoise(kvp.Key, 3) / _elevation - (1 - _elevation);
 			
 			if (kvp.Value.MainTerrain == "Grassland")
 			{
 				kvp.Value.MainTerrain = (temperature, humidity) switch
 				{
-					(< -0.5f, _) => "Snow",
-					(< -0.4f, > 0) => "Snow",
-					(< -0.3f, _) => "Tundra",
+					(< -0.35f, _) => "Snow",
+					(< -0.28f, > 0) => "Snow",
+					(< -0.2f, _) => "Tundra",
 					(< 0.4f, < 0) => "Plain",
 					(>= 0.4f, < 0.3f) => "Desert",
 					(_, _) => "Grassland"
@@ -157,8 +174,7 @@ public class DefaultMapGenerator(
 						break;
 				}
 				//Gen vegetation
-				highFrequencyNoisy.SetOffset(new Vector3(-500, -500, -500));
-				var vegetation = (highFrequencyNoisy.GetNoise2Dv(kvp.Key) + 1) / 2;
+				var vegetation = (GetHighFrequencyNoise(kvp.Key, 5) + 1) / 2;
 				if(kvp.Value.MainTerrain == "Mountain" || vegetation > _vegetation) continue;
 				switch (temperature)
 				{
@@ -171,7 +187,7 @@ public class DefaultMapGenerator(
 				}
 				
 			}
-			else if (kvp.Value.IsWater() && temperature < -0.6f)
+			else if (kvp.Value.IsWater() && temperature < -0.7f)
 				kvp.Value.Features.Add("Ice");
 		}
 		

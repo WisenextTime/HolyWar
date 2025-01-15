@@ -31,6 +31,7 @@ public record Terrain(string Name)
 	public Dictionary<string, int> Produces = [];
 	
 	public List<Unique> Uniques = [];
+	public bool EdgeRender = true;
 }
 
 public record TerrainFeature : Terrain
@@ -42,6 +43,7 @@ public record TerrainFeature : Terrain
 	public TerrainFeature(string Name) : base(Name)
 	{
 		Type = TileType.Empty;
+		EdgeRender = false;
 	}
 	public bool OverwritingProduces = false;
 	public List<string> OccursOn = [];

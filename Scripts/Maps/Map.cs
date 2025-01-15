@@ -40,14 +40,14 @@ public class Map(int size = 10)
 
 	public void InitTiles(string tileName = "Grassland")
 	{
-		for (var x = -Size + 1; x <= Size; x++)
+		for (var x = 0; x <= 2 * Size + 1; x++)
 		{
 			// var tiles = new List<MapTile>();
 			// tiles.AddRange(
 			// 	Enumerable.Repeat(new MapTile(), 2 * Size - 1 - (x < 0 ? -x : x))
 			// 		.Select(t => MapTile.FromTerrain(tileName)));
 			// Tiles.Add(tiles);
-			for (var y = 0; y < 2 * Size - 1 - (x < 0 ? -x : x); y++)
+			for (var y = 0; y < 2 * Size; y++)
 			{
 				var tiles = MapTile.FromTerrain(tileName);
 				Tiles[new Vector2I(x, y)] = tiles;
@@ -62,26 +62,43 @@ public class Map(int size = 10)
 			GetTile(x, y - 1),
 			GetTile(x, y + 1)
 		};
-		if (x > 0)
-		{
-			neighbors.Add(GetTile(x - 1, y));
-			neighbors.Add(GetTile(x - 1, y + 1));
-		}
-		else
+		if (y % 2 == 0)
 		{
 			neighbors.Add(GetTile(x - 1, y));
 			neighbors.Add(GetTile(x - 1, y - 1));
-		}
-	
-		if (x < 0)
-		{
 			neighbors.Add(GetTile(x + 1, y));
-			neighbors.Add(GetTile(x + 1, y + 1));
+			neighbors.Add(GetTile(x - 1, y + 1));
+			
+			if (x == Size + 1)
+			{				
+				neighbors.Add(GetTile(Size + 1, y));
+			}
+
+			if (x == 0)
+			{
+				neighbors.Add(GetTile(0, y));
+				neighbors.Add(GetTile(0, y - 1));
+				neighbors.Add(GetTile(0, y + 1));
+			}
 		}
 		else
 		{
+			neighbors.Add(GetTile(x - 1, y));
+			neighbors.Add(GetTile(x + 1, y + 1));
 			neighbors.Add(GetTile(x + 1, y));
 			neighbors.Add(GetTile(x + 1, y - 1));
+			
+			if (x == 0)
+			{			
+				neighbors.Add(GetTile(0, y));
+			}
+
+			if (x == Size + 1)
+			{
+				neighbors.Add(GetTile(Size + 1, y));
+				neighbors.Add(GetTile(Size + 1, y - 1));
+				neighbors.Add(GetTile(Size + 1, y + 1));
+			}
 		}
 		return neighbors; 
 	}

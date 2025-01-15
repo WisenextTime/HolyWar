@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=3 uid="uid://du2phrp105dey"]
+[gd_scene load_steps=12 format=3 uid="uid://du2phrp105dey"]
 
 [ext_resource type="Script" path="res://Scripts/Game/DebugGame_Map.cs" id="1_yt5op"]
 [ext_resource type="Script" path="res://Scripts/Game/GameMap.cs" id="2_i0pyb"]
@@ -27,7 +27,7 @@ viewport_path = NodePath("TileMaskViewport")
 resource_local_to_scene = true
 render_priority = 0
 shader = ExtResource("3_72630")
-shader_parameter/LineColor = Color(0.2, 0.2, 0.2, 0.8)
+shader_parameter/LineColor = Color(0, 0, 0, 0.14902)
 shader_parameter/LineWidth = 0.01
 shader_parameter/TileMaskLayer = SubResource("ViewportTexture_bes02")
 
@@ -51,17 +51,6 @@ func _ready():
 	main_viewport.size_changed.connect(update_size)
 	pass # Replace with function body.
 "
-
-[sub_resource type="BoxMesh" id="BoxMesh_ruvcv"]
-size = Vector3(2, 2, 2)
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_m7lqa"]
-transparency = 1
-albedo_color = Color(1, 1, 1, 0.490196)
-
-[sub_resource type="BoxMesh" id="BoxMesh_bmv7c"]
-material = SubResource("StandardMaterial3D_m7lqa")
-size = Vector3(3, 3, 3)
 
 [node name="Game" type="Node" node_paths=PackedStringArray("Camera")]
 script = ExtResource("1_yt5op")
@@ -95,24 +84,8 @@ debug_draw = 1
 render_target_update_mode = 4
 script = SubResource("GDScript_ilnjl")
 
-[node name="Camera2" type="Camera3D" parent="TileMaskViewport" node_paths=PackedStringArray("Target")]
+[node name="MaskCamera" type="Camera3D" parent="TileMaskViewport" node_paths=PackedStringArray("Target")]
 transform = Transform3D(-1, -8.21506e-08, 2.99003e-08, 0, 0.34202, 0.939693, -8.74228e-08, 0.939693, -0.34202, 0, 10, 0)
 cull_mask = 2
 script = ExtResource("4_rc8wr")
 Target = NodePath("../../Camera")
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 19.5929, 2, 6.64302)
-layers = 3
-mesh = SubResource("BoxMesh_ruvcv")
-
-[node name="MeshInstance3D2" type="MeshInstance3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 19.5929, 2, 6.64302)
-layers = 3
-mesh = SubResource("BoxMesh_bmv7c")
-
-[node name="TextureRect" type="TextureRect" parent="."]
-offset_right = 225.0
-offset_bottom = 151.0
-texture = SubResource("ViewportTexture_bes02")
-expand_mode = 1

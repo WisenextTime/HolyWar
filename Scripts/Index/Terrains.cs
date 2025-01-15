@@ -116,7 +116,8 @@ public static class Terrains
 					OccursOn = ["Tundra", "Plain", "Grassland", "Desert", "Snow"],
 					MovementCost = 2,
 					DefenseBonus = 0.25f,
-					MaterialSameAs = true
+					MaterialSameAs = true,
+					EdgeRender = true
 
 				}
 			},

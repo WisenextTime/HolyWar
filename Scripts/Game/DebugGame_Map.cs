@@ -6,14 +6,20 @@ namespace HolyWar.Scripts.Game;
 // ReSharper disable once InconsistentNaming
 public partial class DebugGame_Map : Game
 {
-	private bool _mouseLeftButtonPressed = false;
+	private bool _mouseLeftButtonPressed;
+	private Map Map => GameMap.Map;
+	// ReSharper disable once PossibleLossOfFraction
+	private float CameraRightEdge => (Map.Size * 3f + 2) * 1.73205f;
+	// ReSharper disable once PossibleLossOfFraction
+	private float CameraLeftEdge => Map.Size * 1.73205f;
 	public override void _Ready()
 	{
 		var generator = new DefaultMapGenerator();
 		var map = generator.Generate();
 		GameMap.Map = map;
 		GameMap.DrawMap();
-		Camera.Position = new Vector3(map.Size * 1.732f, 10, 0);
+		var cameraPos = GameMap.ToRenderCoord(new Vector2(Map.Size, Map.Size));
+		Camera.Position = new Vector3(cameraPos.X, 10, cameraPos.Z);
 	}
 
 	public override void _UnhandledInput(InputEvent @event)
@@ -27,6 +33,11 @@ public partial class DebugGame_Map : Game
 				if (_mouseLeftButtonPressed)
 				{
 					Camera.Position += new Vector3(mouseMotion.Relative.X / 50, 0, mouseMotion.Relative.Y / 50);
+					if (Camera.Position.X > CameraRightEdge) 
+						Camera.Position = new Vector3(CameraLeftEdge, Camera.Position.Y, Camera.Position.Z);
+					if(Camera.Position.X < CameraLeftEdge)
+						Camera.Position = new Vector3(CameraRightEdge, Camera.Position.Y, Camera.Position.Z);
+					
 				}
 				break;
 		}

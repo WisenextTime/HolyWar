@@ -1,11 +1,6 @@
-[gd_scene load_steps=3 format=3 uid="uid://d1cuj43jg6o7x"]
+[gd_scene load_steps=2 format=3 uid="uid://d1cuj43jg6o7x"]
 
 [ext_resource type="CylinderMesh" uid="uid://ccagxvvwnce3t" path="res://Assets/Models/Tiles/Plain.tres" id="1_7kflh"]
 
-[sub_resource type="PlaneMesh" id="PlaneMesh_7sn8i"]
-
 [node name="Tile" type="MeshInstance3D"]
 mesh = ExtResource("1_7kflh")
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
-mesh = SubResource("PlaneMesh_7sn8i")

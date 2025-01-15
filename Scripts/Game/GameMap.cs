@@ -11,8 +11,9 @@ public partial class GameMap : Node
 	public Map Map;
 	private static PackedScene TileScene => field ??= ResourceLoader.Load<PackedScene>("res://Scenes/Tile.tscn");
 
-	private static readonly Func<Vector2,Vector3> ToRenderCoord = coord =>
-		new Vector3(0.5f * (2 * coord.Y + float.Abs(coord.X)) * 1.732f, 0, coord.X * 1.5f);
+	public static readonly Func<Vector2, Vector3> ToRenderCoord = coord =>
+		new Vector3(1.73205f * coord.X + (coord.Y % 2 == 0 ? 0 : 1.73205f / 2), 0, coord.Y * 1.5f);
+	
 
 	public void DrawMap()
 	{
@@ -37,6 +38,10 @@ public partial class GameMap : Node
 			var tileScene = TileScene.Instantiate<MeshInstance3D>();
 			tileScene.Position = ToRenderCoord(pos);
 			tileScene.Mesh = Globals.Global.Terrains[tile.MainTerrain].Mesh;
+			if (!tile.GetMainTerrain().EdgeRender)
+			{
+				tileScene.Layers |= 0b_10;
+			}
 			foreach (var feature in tile.Features)
 			{
 				//TODO
@@ -49,9 +54,16 @@ public partial class GameMap : Node
 				{
 					featureScene.MaterialOverride = tileScene.Mesh.SurfaceGetMaterial(0);
 				}
+				if (!featureSource.EdgeRender)
+				{
+					featureScene.Layers |= 0b_10;
+				}
 				tileScene.AddChild(featureScene);
 			}
 			AddChild(tileScene);
+			var copy = (MeshInstance3D)tileScene.Duplicate();
+			copy.Position = ToRenderCoord(new Vector2(pos.X + 2 * Map.Size + 2, pos.Y));
+			AddChild(copy);
 		}
 	}
 }

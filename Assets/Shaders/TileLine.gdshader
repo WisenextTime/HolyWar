@@ -27,6 +27,7 @@ void fragment() {
 	color.a *= step(0.5, max(max(sinv.x,sinv.y),sinv.z));
 	
 	color.a *= (1. - texture(TileMaskLayer, SCREEN_UV).a);
+	color.a *= step(0,pos.y);
 	ALBEDO = color.rgb;
 	ALPHA = color.a;
 }
