@@ -200,6 +200,7 @@ public class DefaultMapGenerator(
 		
 		//Gen rivers
 		//TODO
+		//maybe there are some questions.Because I`m not test these
 		var riverCount = rand.Next(0, _size);
 		for (var i = 0; i < riverCount; i++)
 		{

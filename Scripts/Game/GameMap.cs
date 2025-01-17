@@ -66,6 +66,8 @@ public partial class GameMap : Node
 
 		foreach (var riverTile in Map.Tiles.Where(t => t.Value.GetRiverId() != -1))
 		{
+			//TODO
+			//river render
 			foreach (var neighbor in Map.GetNeighbors(riverTile.Key).Where(n => n.GetRiverId() != -1))
 			{
 				var riverPos = ToRenderCoord(riverTile.Key);
