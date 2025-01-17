@@ -49,13 +49,12 @@ public record TerrainFeature : Terrain
 	public List<string> OccursOn = [];
 }
 
-public record River : TerrainFeature
-{
-	public River(string Name) : base(Name) { }
-}
+// public record River : TerrainFeature
+// {
+// 	public River(string Name) : base(Name) { }
+// }
 
 public record LargeRiver : TerrainFeature
 {
-	public int RiverId = 0;
 	public LargeRiver(string Name) : base(Name) { }
 }

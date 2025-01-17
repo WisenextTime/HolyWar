@@ -44,8 +44,6 @@ public partial class GameMap : Node
 			}
 			foreach (var feature in tile.Features)
 			{
-				//TODO
-				if (Globals.Global.Terrains[feature] is River) continue;
 				if (Globals.Global.Terrains[feature] is LargeRiver) continue;
 				var featureScene = TileScene.Instantiate<MeshInstance3D>();
 				featureScene.Mesh = Globals.Global.Terrains[feature].Mesh;
@@ -64,6 +62,14 @@ public partial class GameMap : Node
 			var copy = (MeshInstance3D)tileScene.Duplicate();
 			copy.Position = ToRenderCoord(new Vector2(pos.X + 2 * Map.Size + 2, pos.Y));
 			AddChild(copy);
+		}
+
+		foreach (var riverTile in Map.Tiles.Where(t => t.Value.GetRiverId() != -1))
+		{
+			foreach (var neighbor in Map.GetNeighbors(riverTile.Key).Where(n => n.GetRiverId() != -1))
+			{
+				var riverPos = ToRenderCoord(riverTile.Key);
+			}
 		}
 	}
 }

@@ -25,7 +25,7 @@ public abstract class MapGenerator(int Size = 25,int seed = default,
 }
 // Based on Perlin Noise
 public class DefaultMapGenerator(
-	int size = 35,
+	int size = 25,
 	int seed = default,
 	float elevation = 0.70f,
 	float maxTemperature = 0.60f,
@@ -48,9 +48,9 @@ public class DefaultMapGenerator(
 	private void InitNoiseImage(FastNoiseLite noise)
 	{
 		noise.Frequency = 0.015f;
-		_noiseImage = noise.GetSeamlessImage3D(2 * _size + 2, 2 * size, 10);
+		_noiseImage = noise.GetSeamlessImage3D(2 * _size + 2, 2 * _size, 100);
 		noise.Frequency = 0.3f;
-		_highFrequencyNoiseImage = noise.GetSeamlessImage3D(2 * _size + 2, 2 * size, 10);
+		_highFrequencyNoiseImage = noise.GetSeamlessImage3D(2 * _size + 2, 2 * _size, 100);
 	}
 
 	private float GetNoise(int x, int y, int z)
@@ -65,6 +65,13 @@ public class DefaultMapGenerator(
 	{
 		var noiseValue = _highFrequencyNoiseImage[z].GetPixel(x, y).R;
 		return noiseValue * 2 - 1;
+	}
+
+	private Vector2I GetNextPoint(Random random)
+	{
+		var x = random.Next(0, _size);
+		var y = random.Next(0, _size);
+		return new Vector2I(x, y);
 	}
 	
 	private float GetHighFrequencyNoise(Vector2I pos, int z) => GetHighFrequencyNoise(pos.X, pos.Y, z);
@@ -146,7 +153,7 @@ public class DefaultMapGenerator(
 				float.Clamp(
 					_maxTemperature -
 					(_temperatureVariation + 1f / (_size * 0.8f)) * float.Abs(kvp.Key.Y - _size) +
-					GetNoise(kvp.Key,2)/2,
+					GetNoise(kvp.Key, 2) / 2,
 					-1, 1);
 			var humidity = GetNoise(kvp.Key, 5);
 
@@ -156,9 +163,9 @@ public class DefaultMapGenerator(
 			{
 				kvp.Value.MainTerrain = (temperature, humidity) switch
 				{
-					(< -0.35f, _) => "Snow",
-					(< -0.28f, > 0) => "Snow",
-					(< -0.2f, _) => "Tundra",
+					(< -0.25f, _) => "Snow",
+					(< -0.2f, > 0) => "Snow",
+					(< -0f, _) => "Tundra",
 					(< 0.4f, < 0) => "Plain",
 					(>= 0.4f, < 0.3f) => "Desert",
 					(_, _) => "Grassland"
@@ -166,7 +173,7 @@ public class DefaultMapGenerator(
 				//Hills and mountains
 				switch (height)
 				{
-					case > 0.3f:
+					case > 0.5f:
 						kvp.Value.MainTerrain = "Mountain";
 						break;
 					case > 0f:
@@ -175,7 +182,7 @@ public class DefaultMapGenerator(
 				}
 				//Gen vegetation
 				var vegetation = (GetHighFrequencyNoise(kvp.Key, 5) + 1) / 2;
-				if(kvp.Value.MainTerrain == "Mountain" || vegetation > _vegetation) continue;
+				if(kvp.Value.MainTerrain == "Mountain" || vegetation >= _vegetation) continue;
 				switch (temperature)
 				{
 					case > 0.3f when kvp.Value.MainTerrain is "Grassland" or "Plain":
@@ -193,6 +200,43 @@ public class DefaultMapGenerator(
 		
 		//Gen rivers
 		//TODO
+		var riverCount = rand.Next(0, _size);
+		for (var i = 0; i < riverCount; i++)
+		{
+			var nextRiverId = i;
+			var riverTiles = new List<Vector2I>
+			{
+				GetNextPoint(rand)
+			};
+			while (true)
+			{
+				var nextPoint = riverTiles[^1];
+				if (map.GetTile(nextPoint).IsWater())
+					break;
+				if (map.GetTile(nextPoint).GetRiverId() != -1)
+				{
+					nextRiverId = map.GetTile(nextPoint).GetRiverId();
+				}
+				MapTile connectPoint;
+				do
+				{
+					var points = map.GetNeighbors(nextPoint);
+					connectPoint = points[rand.Next(0, points.Count)];
+				} while (riverTiles.Contains(map.GetTileCoord(connectPoint)) && connectPoint != MapTile.VoidTile);
+				riverTiles.Add(map.GetTileCoord(connectPoint));
+			}
+
+			if (riverTiles.Count <= 1) continue;
+			foreach (var tile in riverTiles)
+			{
+				map.GetTile(tile).LargeRivers.Add(new LargeRiverTile
+				{
+					RiverSource = "River",
+					RiverId = nextRiverId
+				});
+				map.GetTile(tile).Features.Add("River");
+			}
+		}
 		
 		//The first sync
 		foreach (var kvp in map.Tiles)

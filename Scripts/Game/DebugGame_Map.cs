@@ -27,12 +27,26 @@ public partial class DebugGame_Map : Game
 		switch (@event)
 		{
 			case InputEventMouseButton mouseButton:
-				_mouseLeftButtonPressed = mouseButton.Pressed;
+				switch (mouseButton.ButtonIndex)
+				{
+					case MouseButton.Left:
+						_mouseLeftButtonPressed = mouseButton.Pressed;
+						break;
+					case MouseButton.WheelDown:
+						Camera.Position = new Vector3(Camera.Position.X, float.Min(25, Camera.Position.Y + 0.5f),
+							Camera.Position.Z);
+						break;
+					case MouseButton.WheelUp:
+						Camera.Position = new Vector3(Camera.Position.X, float.Max(10, Camera.Position.Y - 0.5f),
+							Camera.Position.Z);
+						break;
+				}
 				break;
 			case InputEventMouseMotion mouseMotion:
 				if (_mouseLeftButtonPressed)
 				{
-					Camera.Position += new Vector3(mouseMotion.Relative.X / 50, 0, mouseMotion.Relative.Y / 50);
+					Camera.Position += new Vector3(mouseMotion.Relative.X / 50, 0, mouseMotion.Relative.Y / 50) *
+						Camera.Position.Y / 15;
 					if (Camera.Position.X > CameraRightEdge) 
 						Camera.Position = new Vector3(CameraLeftEdge, Camera.Position.Y, Camera.Position.Z);
 					if(Camera.Position.X < CameraLeftEdge)

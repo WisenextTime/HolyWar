@@ -206,7 +206,7 @@ public static class Terrains
 				}
 			},
 			{
-				"River", new River("River")
+				"River", new LargeRiver("River")
 				{
 					Color = new Color("#00EEFF"),
 					IsFreshWater = true,
