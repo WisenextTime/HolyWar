@@ -1,10 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using Godot;
-using HolyWar.Scripts.Core;
 
-namespace HolyWar.Scripts.Maps;
+using Godot;
+
+namespace HolyWar.Maps;
 
 public class Map(int size = 10)
 {

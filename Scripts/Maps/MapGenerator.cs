@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
+
 using Godot;
 using Godot.Collections;
-using HolyWar.Scripts.Core;
-using Array = Godot.Collections.Array;
 
-namespace HolyWar.Scripts.Maps;
+using HolyWar.Core;
+
+namespace HolyWar.Maps;
 
 public abstract class MapGenerator(int Size = 25,int seed = default,
 	float Elevation = 0.70f,

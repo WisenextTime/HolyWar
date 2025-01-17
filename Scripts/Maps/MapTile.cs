@@ -1,9 +1,11 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using Godot;
-using HolyWar.Scripts.Core;
 
-namespace HolyWar.Scripts.Maps;
+using Godot;
+
+using HolyWar.Core;
+
+namespace HolyWar.Maps;
 
 public record MapTile()
 {

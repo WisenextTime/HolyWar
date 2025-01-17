@@ -1,6 +1,6 @@
 using Godot;
 
-namespace HolyWar.Scripts.Game;
+namespace HolyWar.Game;
 
 public partial class Game : Node
 {

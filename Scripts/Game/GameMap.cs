@@ -1,10 +1,12 @@
 using System;
 using System.Linq;
-using Godot;
-using HolyWar.Scripts.Core;
-using HolyWar.Scripts.Maps;
 
-namespace HolyWar.Scripts.Game;
+using Godot;
+
+using HolyWar.Core;
+using HolyWar.Maps;
+
+namespace HolyWar.Game;
 
 public partial class GameMap : Node
 {

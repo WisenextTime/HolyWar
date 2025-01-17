@@ -1,6 +1,6 @@
 ﻿using Godot;
 
-namespace HolyWar.Scripts.Core;
+namespace HolyWar.Core;
 
 public struct Stat
 {

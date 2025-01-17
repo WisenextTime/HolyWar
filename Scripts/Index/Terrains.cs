@@ -1,8 +1,10 @@
 ﻿using System.Collections.Generic;
-using Godot;
-using HolyWar.Scripts.Core;
 
-namespace HolyWar.Scripts.Index;
+using Godot;
+
+using HolyWar.Core;
+
+namespace HolyWar.Index;
 
 public static class Terrains
 {

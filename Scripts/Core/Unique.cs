@@ -1,3 +1,3 @@
-﻿namespace HolyWar.Scripts.Core;
+﻿namespace HolyWar.Core;
 
 public abstract class Unique { }

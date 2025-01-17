@@ -1,7 +1,8 @@
 using Godot;
-using HolyWar.Scripts.Maps;
 
-namespace HolyWar.Scripts.Game;
+using HolyWar.Maps;
+
+namespace HolyWar.Game;
 
 // ReSharper disable once InconsistentNaming
 public partial class DebugGame_Map : Game

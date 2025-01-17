@@ -1,7 +1,8 @@
 ﻿using System.Collections.Generic;
+
 using Godot;
 
-namespace HolyWar.Scripts.Core;
+namespace HolyWar.Core;
 
 public record Terrain(string Name)
 {

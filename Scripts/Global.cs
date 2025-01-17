@@ -1,7 +1,8 @@
 ﻿using System.Collections.Generic;
-using HolyWar.Scripts.Core;
 
-namespace HolyWar.Scripts;
+using HolyWar.Core;
+
+namespace HolyWar;
 
 public class Globals
 {
