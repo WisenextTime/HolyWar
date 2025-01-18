@@ -9,6 +9,7 @@ using HolyWar.Core;
 
 namespace HolyWar.Maps;
 
+[Obsolete("Use MapBuilder instead")]
 public abstract class MapGenerator(int Size = 25,int seed = default,
 	float Elevation = 0.70f,
 	float MaxTemperature = 0.60f, float TemperatureVariation = 0.0f,
@@ -21,9 +22,11 @@ public abstract class MapGenerator(int Size = 25,int seed = default,
 	{
 		Seed = (int)Time.GetTicksMsec();
 	}
-	public abstract Map Generate();
+	public abstract OldMap Generate();
 }
+
 // Based on Perlin Noise
+[Obsolete("Use MapBuilder instead")]
 public class DefaultMapGenerator(
 	int size = 25,
 	int seed = default,
@@ -41,7 +44,7 @@ public class DefaultMapGenerator(
 	private readonly float _temperatureVariation = temperatureVariation;
 	private readonly float _elevation = elevation;
 	private readonly float _vegetation = vegetation;
-	
+
 	private Array<Image> _noiseImage;
 	private Array<Image> _highFrequencyNoiseImage;
 
@@ -58,7 +61,7 @@ public class DefaultMapGenerator(
 		var noiseValue = _noiseImage[z].GetPixel(x, y).R;
 		return noiseValue * 2 - 1;
 	}
-	
+
 	private float GetNoise(Vector2I pos, int z) => GetNoise(pos.X, pos.Y, z);
 
 	private float GetHighFrequencyNoise(int x, int y, int z)
@@ -73,14 +76,14 @@ public class DefaultMapGenerator(
 		var y = random.Next(0, _size);
 		return new Vector2I(x, y);
 	}
-	
+
 	private float GetHighFrequencyNoise(Vector2I pos, int z) => GetHighFrequencyNoise(pos.X, pos.Y, z);
 
-	public override Map Generate()
+	public override OldMap Generate()
 	{
 		var noise = new FastNoiseLite { Seed = Seed, NoiseType = FastNoiseLite.NoiseTypeEnum.Perlin};
 		InitNoiseImage(noise);
-		var map = new Map
+		var map = new OldMap
 		{
 			Size = _size,
 			Seed = Seed,
@@ -127,9 +130,9 @@ public class DefaultMapGenerator(
 								changeList.Add(pos);
 								searchList.Add(pos);
 							}
-							else if (neighbor.MainTerrain is "Ocean" or "Grassland" && !edgeTiles.Contains(pos)) 
+							else if (neighbor.MainTerrain is "Ocean" or "Grassland" && !edgeTiles.Contains(pos))
 								edgeTiles.Add(pos);
-							
+
 							searchList.Remove(nowSearch);
 						}
 					}
@@ -145,7 +148,7 @@ public class DefaultMapGenerator(
 				}
 			}
 		}
-		
+
 		// Gen more terrains
 		foreach (var kvp in map.Tiles)
 		{
@@ -158,7 +161,7 @@ public class DefaultMapGenerator(
 			var humidity = GetNoise(kvp.Key, 5);
 
 			var height = GetHighFrequencyNoise(kvp.Key, 3) / _elevation - (1 - _elevation);
-			
+
 			if (kvp.Value.MainTerrain == "Grassland")
 			{
 				kvp.Value.MainTerrain = (temperature, humidity) switch
@@ -192,12 +195,12 @@ public class DefaultMapGenerator(
 						kvp.Value.Features.Add("Forest");
 						break;
 				}
-				
+
 			}
 			else if (kvp.Value.IsWater() && temperature < -0.7f)
 				kvp.Value.Features.Add("Ice");
 		}
-		
+
 		//Gen rivers
 		//TODO
 		//maybe there are some questions.Because I`m not test these
@@ -218,12 +221,12 @@ public class DefaultMapGenerator(
 				{
 					nextRiverId = map.GetTile(nextPoint).GetRiverId();
 				}
-				MapTile connectPoint;
+				OldMapTile connectPoint;
 				do
 				{
 					var points = map.GetNeighbors(nextPoint);
 					connectPoint = points[rand.Next(0, points.Count)];
-				} while (riverTiles.Contains(map.GetTileCoord(connectPoint)) && connectPoint != MapTile.VoidTile);
+				} while (riverTiles.Contains(map.GetTileCoord(connectPoint)) && connectPoint != OldMapTile.VoidTile);
 				riverTiles.Add(map.GetTileCoord(connectPoint));
 			}
 
@@ -238,13 +241,13 @@ public class DefaultMapGenerator(
 				map.GetTile(tile).Features.Add("River");
 			}
 		}
-		
+
 		//The first sync
 		foreach (var kvp in map.Tiles)
 		{
 			kvp.Value.Sync();
 		}
-		
+
 		//Rare feature
 		foreach (var rareFeature in Globals.Global.Terrains.Where(pair => pair.Value is TerrainFeature { IsRare: true }))
 		{

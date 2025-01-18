@@ -8,7 +8,7 @@ namespace HolyWar.Game;
 public partial class DebugGame_Map : Game
 {
 	private bool _mouseLeftButtonPressed;
-	private Map Map => GameMap.Map;
+	private OldMap Map => GameMap.Map;
 	// ReSharper disable once PossibleLossOfFraction
 	private float CameraRightEdge => (Map.Size * 3f + 2) * 1.73205f;
 	// ReSharper disable once PossibleLossOfFraction

@@ -10,7 +10,7 @@ namespace HolyWar.Game;
 
 public partial class GameMap : Node
 {
-	public Map Map;
+	public OldMap Map;
 	private static PackedScene TileScene => field ??= ResourceLoader.Load<PackedScene>("res://Scenes/Tile.tscn");
 
 	public static readonly Func<Vector2, Vector3> ToRenderCoord = coord =>

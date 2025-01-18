@@ -4,4 +4,8 @@
     <EnableDynamicLoading>true</EnableDynamicLoading>
     <LangVersion>preview</LangVersion>
   </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="KirisameLib.Core" Version="0.1.0" />
+    <PackageReference Include="KirisameLib.Data" Version="0.1.0" />
+  </ItemGroup>
 </Project>

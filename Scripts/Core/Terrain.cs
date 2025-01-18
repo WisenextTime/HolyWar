@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections.Frozen;
+using System.Collections.Generic;
+using System.Collections.Immutable;
 
 using Godot;
 
@@ -6,56 +8,58 @@ namespace HolyWar.Core;
 
 public record Terrain(string Name)
 {
-	public string Name = Name;
-	public Mesh Mesh;
-	public TileType Type = TileType.Land;
-	public int MovementCost = 1;
-	public float DefenseBonus = 0;
-	
-	public bool IsImpassable = false;
-	public bool IsOpenArea = true;
-	public bool IsRoughArea = false;
-	public bool PreventingFreshWater = false;
-	public bool IsFreshWater = false;
-	public bool IsUnbuildable = false;
-	
-	//only effort when this terrain is 'Water'
-	public bool IsCoast = false;
-	public bool IsOcean = false;
-	
-	public enum TileType
-	{
-		Empty,Land,Water
-	}
-	public Color Color;
+    public Mesh Mesh { get; init; }
+    public virtual TileType Type { get; init; } = TileType.Land;
+    public int MovementCost { get; init; } = 1;
+    public float DefenseBonus { get; init; } = 0;
 
-	public Dictionary<string, int> Produces = [];
-	
-	public List<Unique> Uniques = [];
-	public bool EdgeRender = true;
+    public bool IsImpassable { get; init; } = false;
+    public bool IsOpenArea { get; init; } = true;
+    public bool IsRoughArea { get; init; } = false;
+    public bool PreventingFreshWater { get; init; } = false;
+    public bool IsFreshWater { get; init; } = false;
+    public bool IsUnbuildable { get; init; } = false;
+
+    public Color Color { get; init; }
+
+    public ImmutableDictionary<string, int> Produces { get; init; } = ImmutableDictionary.Create<string, int>();
+
+    public ImmutableList<Unique> Uniques { get; init; } = [];
+    public virtual bool EdgeRender { get; init; } = true;
+
+    public static Terrain Default { get; } = new("Null")
+    {
+        Color = new Color("#000000"),
+        Mesh = ResourceLoader.Load<Mesh>("res://Assets/Models/Tiles/Void.tres"),
+        Type = TileType.Empty
+    };
+
+    public enum TileType
+    {
+        Empty, Land, Water
+    }
 }
 
-public record TerrainFeature : Terrain
+public record WaterTerrain(string Name) : Terrain(Name)
 {
-	public float RareRate = 0.1f;
-	public bool IsRare = false;
-	public bool MaterialSameAs = false;
-	public bool OnlyOnFreshWater = false;
-	public TerrainFeature(string Name) : base(Name)
-	{
-		Type = TileType.Empty;
-		EdgeRender = false;
-	}
-	public bool OverwritingProduces = false;
-	public List<string> OccursOn = [];
+    public override TileType Type => TileType.Water;
+
+    public bool IsCoast { get; init; } = false;
+    public bool IsOcean { get; init; } = false;
 }
 
-// public record River : TerrainFeature
-// {
-// 	public River(string Name) : base(Name) { }
-// }
-
-public record LargeRiver : TerrainFeature
+public record TerrainFeature(string Name) : Terrain(Name)
 {
-	public LargeRiver(string Name) : base(Name) { }
+    public override TileType Type => TileType.Empty;
+    public override bool EdgeRender => false;
+
+    public float RareRate { get; init; } = 0.1f;
+    public bool IsRare { get; init; } = false;
+    public bool MaterialSameAs { get; init; } = false;
+    public bool OnlyOnFreshWater { get; init; } = false;
+
+    public bool OverwritingProduces { get; init; } = false;
+    public ImmutableList<string> OccursOn { get; init; } = [];
 }
+
+public record LargeRiver(string Name) : TerrainFeature(Name) { }

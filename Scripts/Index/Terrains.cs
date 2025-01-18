@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 using Godot;
 
@@ -6,6 +7,7 @@ using HolyWar.Core;
 
 namespace HolyWar.Index;
 
+[Obsolete]
 public static class Terrains
 {
 	/*
@@ -78,7 +80,7 @@ public static class Terrains
 				}
 			},
 			{
-				"Coast", new Terrain("Coast")
+				"Coast", new WaterTerrain("Coast")
 				{
 					Color = new Color("#00ECFF"),
 					Mesh = ResourceLoader.Load<Mesh>("res://Assets/Models/Tiles/Coast.tres"),
@@ -88,7 +90,7 @@ public static class Terrains
 				}
 			},
 			{
-				"Ocean", new Terrain("Ocean")
+				"Ocean", new WaterTerrain("Ocean")
 				{
 					Color = new Color("#006BFF"),
 					Mesh = ResourceLoader.Load<Mesh>("res://Assets/Models/Tiles/Ocean.tres"),
