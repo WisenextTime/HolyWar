@@ -60,6 +60,11 @@ public record TerrainFeature(string Name) : Terrain(Name)
 
     public bool OverwritingProduces { get; init; } = false;
     public ImmutableList<string> OccursOn { get; init; } = [];
+
+    public new static TerrainFeature Default { get; } = new("Null")
+    {
+        Mesh = ResourceLoader.Load<Mesh>("res://Assets/Models/Tiles/Void.tres"),
+    };
 }
 
 public record LargeRiver(string Name) : TerrainFeature(Name) { }

@@ -12,5 +12,5 @@ public abstract class MapBuilder(int size, int seed = -1)
     public int Size => size;
     public int Seed { get; } = seed is -1 ? (int)Time.GetTicksMsec() : seed;
 
-    public abstract OldMap GetMap();
+    public abstract Map GetMap();
 }

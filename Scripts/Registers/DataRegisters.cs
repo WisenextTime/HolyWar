@@ -9,7 +9,9 @@ namespace HolyWar.Registers;
 
 public static class DataRegisters
 {
+    public static CommonRegister<Terrain> TerrainsRegister { get; } = new(_ => Terrain.Default);
+    public static CommonRegister<TerrainFeature> TerrainFeaturesRegister { get; } = new(_ => TerrainFeature.Default);
 
-
-    public static CommonRegister<Terrain> Terrains { get; } = new(_ => Terrain.Default);
+    public static IRegister<Terrain> Terrains => TerrainsRegister;
+    public static IRegister<TerrainFeature> TerrainsFeatures => TerrainFeaturesRegister;
 }

@@ -15,10 +15,6 @@ public static class DataPreloading
          * Normal terrains:
          * Void
          * Grassland, Plain, Tundra, Snow, Desert, Lake, Coast, Ocean, Mountain
-         *
-         * Terrain features:
-         * Hill, Forest, Jungle, Marsh, Oasis, FloodPlain, Ice, Atoll
-         * Fallout, River
          */
         new Terrain[]
         {
@@ -88,7 +84,23 @@ public static class DataPreloading
                 IsRoughArea = true,
                 DefenseBonus = 0.25f
             },
-            new TerrainFeature("Hill")
+            new LargeRiver("River")
+            {
+                Color = new Color("#00EEFF"),
+                IsFreshWater = true,
+                Produces = { { "Gold", 1 } },
+                MovementCost = 0,
+                DefenseBonus = -0.2f,
+            }
+        }.ForEach(terrain => DataRegisters.TerrainsRegister.RegisterItem(terrain.Name, terrain));
+
+        /* Terrain features:
+         * Hill, Forest, Jungle, Marsh, Oasis, FloodPlain, Ice, Atoll
+         * Fallout, River
+         */
+        new TerrainFeature[]
+        {
+            new("Hill")
             {
                 Color = default,
                 Mesh = ResourceLoader.Load<Mesh>("res://Assets/Models/Tiles/Hill.tres"),
@@ -101,7 +113,7 @@ public static class DataPreloading
                 MaterialSameAs = true,
                 EdgeRender = true
             },
-            new TerrainFeature("Forest")
+            new("Forest")
             {
                 Color = default,
                 Mesh = ResourceLoader.Load<Mesh>("res://Assets/Models/Tiles/Tree.tres"),
@@ -112,7 +124,7 @@ public static class DataPreloading
                 MovementCost = 2,
                 DefenseBonus = 0.25f
             },
-            new TerrainFeature("Ice")
+            new("Ice")
             {
                 Color = default,
                 Mesh = ResourceLoader.Load<Mesh>("res://Assets/Models/Tiles/Ice.tres"),
@@ -120,7 +132,7 @@ public static class DataPreloading
                 IsImpassable = true,
                 OccursOn = ["Coast", "Ocean"],
             },
-            new TerrainFeature("Atoll")
+            new("Atoll")
             {
                 Color = default,
                 Mesh = ResourceLoader.Load<Mesh>("res://Assets/Models/Tiles/Atoll.tres"),
@@ -128,7 +140,7 @@ public static class DataPreloading
                 IsRare = true,
                 OccursOn = ["Coast"],
             },
-            new TerrainFeature("Oasis")
+            new("Oasis")
             {
                 Color = default,
                 Mesh = ResourceLoader.Load<Mesh>("res://Assets/Models/Tiles/Oasis.tres"),
@@ -139,7 +151,7 @@ public static class DataPreloading
                 IsUnbuildable = true,
                 DefenseBonus = -0.1f
             },
-            new TerrainFeature("Marsh")
+            new("Marsh")
             {
                 Color = default,
                 Mesh = ResourceLoader.Load<Mesh>("res://Assets/Models/Tiles/Marsh.tres"),
@@ -150,7 +162,7 @@ public static class DataPreloading
                 MovementCost = 3,
                 OccursOn = ["Grassland"]
             },
-            new TerrainFeature("FloodPlain")
+            new("FloodPlain")
             {
                 Color = default,
                 Mesh = ResourceLoader.Load<Mesh>("res://Assets/Models/Tiles/Flood.tres"),
@@ -160,7 +172,7 @@ public static class DataPreloading
                 OnlyOnFreshWater = true,
                 OccursOn = ["Desert"]
             },
-            new TerrainFeature("Jungle")
+            new("Jungle")
             {
                 Color = default,
                 Mesh = ResourceLoader.Load<Mesh>("res://Assets/Models/Tiles/Jungle.tres"),
@@ -171,14 +183,6 @@ public static class DataPreloading
                 MovementCost = 2,
                 DefenseBonus = 0.25f
             },
-            new LargeRiver("River")
-            {
-                Color = new Color("#00EEFF"),
-                IsFreshWater = true,
-                Produces = { { "Gold", 1 } },
-                MovementCost = 0,
-                DefenseBonus = -0.2f,
-            }
-        }.ForEach(terrain => DataRegisters.Terrains.RegisterItem(terrain.Name, terrain));
+        }.ForEach(feature => DataRegisters.TerrainFeaturesRegister.RegisterItem(feature.Name, feature));
     }
 }
