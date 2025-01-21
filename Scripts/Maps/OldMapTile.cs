@@ -73,7 +73,7 @@ public record OldMapTile()
         foreach (var terrain in GetFeatures())
         {
             if (terrain is not TerrainFeature feature) continue;
-            if (feature.OverwritingProduces)
+            if (feature.Overwriting)
             {
                 IsOpen = feature.IsOpenArea;
                 IsRough = feature.IsRoughArea;

@@ -58,7 +58,8 @@ public record TerrainFeature(string Name) : Terrain(Name)
     public bool MaterialSameAs { get; init; } = false;
     public bool OnlyOnFreshWater { get; init; } = false;
 
-    public bool OverwritingProduces { get; init; } = false;
+    public int Priority { get; init; } = 0;
+    public bool Overwriting { get; init; } = false;
     public ImmutableList<string> OccursOn { get; init; } = [];
 
     public new static TerrainFeature Default { get; } = new("Null")

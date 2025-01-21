@@ -115,7 +115,7 @@ public static class Terrains
 					Color = default,
 					Mesh = ResourceLoader.Load<Mesh>("res://Assets/Models/Tiles/Hill.tres"),
 					Produces = { { "Production", 2 } },
-					OverwritingProduces = true,
+					Overwriting = true,
 					IsRoughArea = true,
 					OccursOn = ["Tundra", "Plain", "Grassland", "Desert", "Snow"],
 					MovementCost = 2,
@@ -132,7 +132,7 @@ public static class Terrains
 					Mesh = ResourceLoader.Load<Mesh>("res://Assets/Models/Tiles/Tree.tres"),
 					Produces = { { "Food", 1 }, { "Production", 1 } },
 					IsRoughArea = true,
-					OverwritingProduces = true,
+					Overwriting = true,
 					OccursOn = ["Tundra", "Plain", "Grassland", "Hill"],
 					MovementCost = 2,
 					DefenseBonus = 0.25f
@@ -143,7 +143,7 @@ public static class Terrains
 				{
 					Color = default,
 					Mesh = ResourceLoader.Load<Mesh>("res://Assets/Models/Tiles/Ice.tres"),
-					OverwritingProduces = true,
+					Overwriting = true,
 					IsImpassable = true,
 					OccursOn = ["Coast", "Ocean"],
 				}
@@ -203,7 +203,7 @@ public static class Terrains
 					Mesh = ResourceLoader.Load<Mesh>("res://Assets/Models/Tiles/Jungle.tres"),
 					Produces = { { "Food", 2 } },
 					IsRoughArea = true,
-					OverwritingProduces = true,
+					Overwriting = true,
 					OccursOn = ["Plain", "Grassland", "Hill"],
 					MovementCost = 2,
 					DefenseBonus = 0.25f
