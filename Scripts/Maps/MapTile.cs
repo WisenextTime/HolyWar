@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
+﻿using System.Collections.Generic;
 using System.Linq;
-
-using HolyWar.Core;
-using HolyWar.Registers;
 
 using KirisameLib.Collections;
 
@@ -14,7 +9,7 @@ public class MapTile
 {
     #region Fields & Properties
 
-    private Terrain MainTerrain
+    private NewTerrain MainTerrain
     {
         get;
         set
@@ -23,30 +18,20 @@ public class MapTile
             field = value;
             _propertiesDirty = true;
         }
-    } = DataRegisters.Terrains["Void"];
+    } //= DataRegisters.Terrains["Void"]; (todo: add this
 
-    private bool _propertiesDirty = true;
-
-    private readonly List<TerrainFeature> _features = [];
-    private readonly List<TerrainFeature> _overwritingFeatures = [];
+    private readonly List<NewTerrainFeature> _features = [];
+    private readonly List<NewTerrainFeature> _overwritingFeatures = [];
     public int OverwritingPriority { get; set; }
-    public CombinedListView<TerrainFeature> Features => field ??= new(_features, _overwritingFeatures);
-    public IEnumerable<TerrainFeature> EffectiveFeatures =>
+    public CombinedListView<NewTerrainFeature> Features => field ??= new(_features, _overwritingFeatures);
+    public IEnumerable<NewTerrainFeature> EffectiveFeatures =>
         _overwritingFeatures.Count == 0 ? Features : Features.Where(f => f.Priority >= OverwritingPriority);
 
 
-    public Terrain.TileType TileType => MainTerrain.Type;
+    public TerrainType TerrainType => MainTerrain.Type;
 
-    public float DefenseBonus
-    {
-        get
-        {
-            if (_propertiesDirty) UpdateProperties();
-            return field;
-        }
-        private set;
-    }
-    public int MovementCost
+    private bool _propertiesDirty = true;
+    public TileProperties Properties
     {
         get
         {
@@ -56,15 +41,15 @@ public class MapTile
         private set;
     }
 
-    public bool IsWater => TileType == Terrain.TileType.Water; // || MainTerrain is LargeRiver;
-    public bool IsLand => TileType == Terrain.TileType.Land;
+    public bool IsWater => TerrainType == TerrainType.Water; // || MainTerrain is LargeRiver;
+    public bool IsLand => TerrainType == TerrainType.Land;
 
     #endregion
 
 
     #region Public Methods
 
-    public void AddTerrainFeature(TerrainFeature feature)
+    public void AddTerrainFeature(NewTerrainFeature feature)
     {
         if (!feature.Overwriting) _features.Add(feature);
         else
@@ -76,7 +61,7 @@ public class MapTile
         _propertiesDirty = true;
     }
 
-    public bool RemoveTerrainFeature(TerrainFeature feature)
+    public bool RemoveTerrainFeature(NewTerrainFeature feature)
     {
         bool result;
         if (!feature.Overwriting) result = _features.Remove(feature);
@@ -97,18 +82,12 @@ public class MapTile
 
     private void UpdateProperties()
     {
-        //todo:其他属性还没做x
         _propertiesDirty = false;
 
-        (MovementCost, DefenseBonus) = _overwritingFeatures.Count == 0
-            ? (MainTerrain.MovementCost, MainTerrain.DefenseBonus)  //todo: 也许这里用个析构函数之类的东西获取元组会更好
-            : (0, 0);
+        TileProperties properties = _overwritingFeatures.Count == 0 ? MainTerrain.Properties : new();
+        properties = EffectiveFeatures.Aggregate(properties, (current, feature) => current + feature.Properties);
 
-        foreach (var feature in EffectiveFeatures)
-        {
-            MovementCost += feature.MovementCost;
-            DefenseBonus += feature.DefenseBonus;
-        }
+        Properties = properties;
     }
 
     #endregion

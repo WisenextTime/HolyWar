@@ -10,8 +10,10 @@ public record Terrain(string Name)
 {
     public Mesh Mesh { get; init; }
     public virtual TileType Type { get; init; } = TileType.Land;
+
     public int MovementCost { get; init; } = 1;
     public float DefenseBonus { get; init; } = 0;
+    public (int MovementCost, float DefenseBonus) ValueProperties => (MovementCost, DefenseBonus);
 
     public bool IsImpassable { get; init; } = false;
     public bool IsOpenArea { get; init; } = true;
