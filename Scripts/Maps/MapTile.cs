@@ -72,7 +72,7 @@ public class MapTile
         }
 
         if (result) _propertiesDirty = true;
-        return true;
+        return result;
     }
 
     #endregion
@@ -84,8 +84,8 @@ public class MapTile
     {
         _propertiesDirty = false;
 
-        TileProperties properties = _overwritingFeatures.Count == 0 ? MainTerrain.Properties : new();
-        properties = EffectiveFeatures.Aggregate(properties, (current, feature) => current + feature.Properties);
+        TileProperties properties = _overwritingFeatures.Count == 0 ? MainTerrain.TileProperties : new();
+        properties = EffectiveFeatures.Aggregate(properties, (current, feature) => current + feature.TileProperties);
 
         Properties = properties;
     }

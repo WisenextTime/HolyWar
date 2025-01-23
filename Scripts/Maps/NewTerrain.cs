@@ -8,16 +8,21 @@ public class NewTerrain
 {
     public string Name { get; init; }
     public Mesh Mesh { get; init; }
+    public Color Color { get; init; }
     public virtual TerrainType Type { get; init; } = TerrainType.Land;
-    public TileProperties Properties { get; init; }
+
+    public TileProperties TileProperties { get; init; }
+    public TerrainProperties TerrainProperties { get; init; }
 }
 
 public class NewTerrainFeature
 {
     public string Name { get; init; }
     public Mesh Mesh { get; init; }
+    public Color Color { get; init; }
 
-    public TileProperties Properties { get; init; }
+    public TileProperties TileProperties { get; init; }
+    public TerrainProperties TerrainProperties { get; init; }
 
     public int Priority { get; init; } = 0;
     public bool Overwriting { get; init; } = false;
