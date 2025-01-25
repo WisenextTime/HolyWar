@@ -40,6 +40,15 @@ public class MapTile
         }
         private set;
     }
+    public TerrainProperties TerrainProperties
+    {
+        get
+        {
+            if (_propertiesDirty) UpdateProperties();
+            return field;
+        }
+        private set;
+    }
 
     public bool IsWater => TerrainType == TerrainType.Water; // || MainTerrain is LargeRiver;
     public bool IsLand => TerrainType == TerrainType.Land;
@@ -85,9 +94,14 @@ public class MapTile
         _propertiesDirty = false;
 
         TileProperties properties = _overwritingFeatures.Count == 0 ? MainTerrain.TileProperties : new();
-        properties = EffectiveFeatures.Aggregate(properties, (current, feature) => current + feature.TileProperties);
+        TerrainProperties terrainProperties = new();
+        foreach (NewTerrainFeature feature in EffectiveFeatures)
+        {
+            properties += feature.TileProperties;
+            terrainProperties += feature.TerrainProperties;
+        }
 
-        Properties = properties;
+        (Properties, TerrainProperties) = (properties, terrainProperties);
     }
 
     #endregion
