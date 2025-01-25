@@ -1,12 +1,24 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 
+using HolyWar.Core;
+
 using KirisameLib.Collections;
 
 namespace HolyWar.Maps;
 
 public class MapTile
 {
+    #region Getters
+
+    public static MapTile FromTerrain(NewTerrain terrain) => new()
+    {
+        MainTerrain = terrain,
+    };
+
+    #endregion
+
+
     #region Fields & Properties
 
     private NewTerrain MainTerrain
