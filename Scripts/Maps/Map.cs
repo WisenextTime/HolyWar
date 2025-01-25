@@ -7,7 +7,7 @@ using HolyWar.Core;
 
 namespace HolyWar.Maps;
 
-public class Map(int halfWidth, int height, NewTerrain defaultTerrain)
+public class Map(int width, int height, NewTerrain defaultTerrain)
 {
     #region Getter
 
@@ -18,9 +18,9 @@ public class Map(int halfWidth, int height, NewTerrain defaultTerrain)
 
     #region Basic Members
 
-    public Vector2I Size => new(halfWidth * 2, height);
+    public Vector2I Size => new(width, height);
 
-    private MapTile[,] _tiles = new MapTile[halfWidth * 2, height];
+    private MapTile[,] _tiles = new MapTile[width, height];
     private Dictionary<MapTile, Vector2I> _tilePosDict = new();
 
     public MapTile this[int x, int y] => GetTile(x, y);
