@@ -1,7 +1,7 @@
 [gd_scene load_steps=12 format=3 uid="uid://du2phrp105dey"]
 
 [ext_resource type="Script" path="res://Scripts/Game/DebugGame_Map.cs" id="1_yt5op"]
-[ext_resource type="Script" path="res://Scripts/Game/GameMap.cs" id="2_i0pyb"]
+[ext_resource type="Script" path="res://Scripts/Game/OldGameMap.cs" id="2_ymkq4"]
 [ext_resource type="Shader" path="res://Assets/Shaders/TileLine.gdshader" id="3_72630"]
 [ext_resource type="Script" path="res://GdScripts/sync_camera.gd" id="4_rc8wr"]
 
@@ -67,7 +67,7 @@ metadata/_edit_lock_ = true
 [node name="Players" type="Node" parent="."]
 
 [node name="Map" type="Node" parent="."]
-script = ExtResource("2_i0pyb")
+script = ExtResource("2_ymkq4")
 
 [node name="Camera" type="Camera3D" parent="."]
 transform = Transform3D(-1, -8.21506e-08, 2.99003e-08, 0, 0.34202, 0.939693, -8.74228e-08, 0.939693, -0.34202, 0, 10, 0)

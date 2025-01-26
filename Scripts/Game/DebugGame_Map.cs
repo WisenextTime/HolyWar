@@ -19,7 +19,7 @@ public partial class DebugGame_Map : Game
 		var map = generator.Generate();
 		GameMap.Map = map;
 		GameMap.DrawMap();
-		var cameraPos = GameMap.ToRenderCoord(new Vector2(Map.Size, Map.Size));
+		var cameraPos = OldGameMap.ToRenderCoord(new Vector2(Map.Size, Map.Size));
 		Camera.Position = new Vector3(cameraPos.X, 10, cameraPos.Z);
 	}
 

@@ -5,6 +5,8 @@ using Godot;
 
 using HolyWar.Core;
 
+using KirisameLib.Extensions;
+
 namespace HolyWar.Maps;
 
 public class Map(int width, int height, NewTerrain defaultTerrain)
@@ -39,6 +41,18 @@ public class Map(int width, int height, NewTerrain defaultTerrain)
 
     public Vector2I GetTilePos(MapTile tile) => _tilePosDict[tile];
     public bool TryGetTilePos(MapTile tile, out Vector2I pos) => _tilePosDict.TryGetValue(tile, out pos);
+
+    #endregion
+
+
+    #region Collections
+
+    public IEnumerable<Vector2I> Coordinates =>
+        from x in Enumerable.Range(0, Size.X)
+        from y in Enumerable.Range(0, Size.Y)
+        select new Vector2I(x, y);
+    public IEnumerable<MapTile> Tiles => Coordinates.Select(pos => this[pos]);
+    public IEnumerable<(Vector2I coord, MapTile tile)> TilesWithCoord => Coordinates.Select(pos => (pos, this[pos]));
 
     #endregion
 

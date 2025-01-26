@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 using HolyWar.Core;
@@ -21,7 +22,7 @@ public class MapTile
 
     #region Fields & Properties
 
-    private NewTerrain MainTerrain
+    public NewTerrain MainTerrain
     {
         get;
         set
@@ -95,6 +96,13 @@ public class MapTile
         if (result) _propertiesDirty = true;
         return result;
     }
+
+    #endregion
+
+
+    #region Events
+
+    private event Action<MapTile> MeshUpdatedEvent; // todo:是的这里回头搞个显示更新
 
     #endregion
 
