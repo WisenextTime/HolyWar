@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 
 using HolyWar.Core;
+using HolyWar.Registers;
 
 using KirisameLib.Collections;
 
@@ -31,7 +32,7 @@ public class MapTile
             field = value;
             _propertiesDirty = true;
         }
-    } //= DataRegisters.Terrains["Void"]; (todo: add this
+    } = DataRegisters.Terrains["Void"];
 
     private readonly List<NewTerrainFeature> _features = [];
     private readonly List<NewTerrainFeature> _overwritingFeatures = [];

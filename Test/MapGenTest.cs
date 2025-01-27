@@ -17,18 +17,25 @@ public partial class MapGenTest : Node
     {
         DataPreloading.PreloadTerrains();
 
-        Vector2I mapSize = new(101, 35);
-        Map map = new CommonMapBuilder(mapSize)
-                 .InitLandWater(DataRegisters.Terrains["GrassLand"], DataRegisters.Terrains["Coast"],
+        Vector2I mapSize = new(80, 25);
+        var seed = (int)Time.GetTicksMsec();
+        // var seed = 2676;
+        GD.Print($"seed: {seed}");
+        Map map = new CommonMapBuilder(mapSize, seed)
+                 .InitLandWater(DataRegisters.Terrains["Grassland"], DataRegisters.Terrains["Coast"],
                                 DataRegisters.Terrains["Ocean"],     DataRegisters.Terrains["Lake"])
                  .GetMap();
         GameMap gameMap = new GameMap(map);
         AddChild(gameMap);
 
-        Camera.CameraUpEdge = (float)mapSize.Y / 2 * 0.75f;
-        Camera.CameraDownEdge = -(float)mapSize.Y / 2 * 0.75f;
-        Camera.CameraLeftEdge = -(float)mapSize.X / 2 * 1.73205f;
-        Camera.CameraRightEdge = (float)mapSize.X / 2 * 1.73205f;
+        // Camera.CameraUpEdge = (float)mapSize.Y / 2 * 0.75f;
+        // Camera.CameraDownEdge = -(float)mapSize.Y / 2 * 0.75f;
+        // Camera.CameraLeftEdge = -(float)mapSize.X / 2 * 1.73205f;
+        // Camera.CameraRightEdge = (float)mapSize.X / 2 * 1.73205f;
+        Camera.CameraLeftEdge = mapSize.X * 0.5f * 1.73205f;
+        Camera.CameraRightEdge = mapSize.X * 1.5f * 1.73205f;
+        Camera.CameraUpEdge = mapSize.Y * 1.5f;
+        Camera.CameraDownEdge = 0;
         Camera.ClampPosition();
     }
 }

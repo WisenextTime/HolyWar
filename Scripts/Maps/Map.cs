@@ -72,7 +72,7 @@ public class Map(int width, int height, NewTerrain defaultTerrain)
         yield return new Vector2I((x + Size.X - 1) % Size.X, y);
         yield return new Vector2I((x + 1) % Size.X,          y);
 
-        int shift = Size.X - (y % 2 * 2 - 1);
+        int shift = Size.X + (y % 2 * 2 - 1);
         if (y > 0)
         {
             yield return new Vector2I(x,                    y - 1);
