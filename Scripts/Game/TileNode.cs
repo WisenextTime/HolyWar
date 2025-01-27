@@ -8,6 +8,8 @@ public partial class TileNode : MeshInstance3D
 {
     #region Getters
 
+    private TileNode() { }
+
     private static PackedScene Scene => field ??= ResourceLoader.Load<PackedScene>("res://Scenes/Tile.tscn");
 
     public static TileNode Create() => Scene.Instantiate<TileNode>();

@@ -15,10 +15,13 @@ public partial class DebugGame_Map : Game
 	private float CameraLeftEdge => Map.Size * 1.73205f;
 	public override void _Ready()
 	{
+		GD.Print(111);
 		var generator = new DefaultMapGenerator();
 		var map = generator.Generate();
+		GD.Print(222);
 		GameMap.Map = map;
 		GameMap.DrawMap();
+		GD.Print(333);
 		var cameraPos = OldGameMap.ToRenderCoord(new Vector2(Map.Size, Map.Size));
 		Camera.Position = new Vector3(cameraPos.X, 10, cameraPos.Z);
 	}
@@ -52,7 +55,6 @@ public partial class DebugGame_Map : Game
 						Camera.Position = new Vector3(CameraLeftEdge, Camera.Position.Y, Camera.Position.Z);
 					if(Camera.Position.X < CameraLeftEdge)
 						Camera.Position = new Vector3(CameraRightEdge, Camera.Position.Y, Camera.Position.Z);
-					
 				}
 				break;
 		}

@@ -32,8 +32,10 @@ enabled=PackedStringArray()
 
 folder_colors={
 "res://Assets/": "orange",
+"res://GdScripts/": "blue",
 "res://Scenes/": "green",
-"res://Scripts/": "purple"
+"res://Scripts/": "purple",
+"res://Test/": "gray"
 }
 
 [gui]

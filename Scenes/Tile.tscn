@@ -1,6 +1,8 @@
-[gd_scene load_steps=2 format=3 uid="uid://d1cuj43jg6o7x"]
+[gd_scene load_steps=3 format=3 uid="uid://d1cuj43jg6o7x"]
 
 [ext_resource type="CylinderMesh" uid="uid://ccagxvvwnce3t" path="res://Assets/Models/Tiles/Plain.tres" id="1_7kflh"]
+[ext_resource type="Script" path="res://Scripts/Game/TileNode.cs" id="2_caobh"]
 
 [node name="Tile" type="MeshInstance3D"]
 mesh = ExtResource("1_7kflh")
+script = ExtResource("2_caobh")

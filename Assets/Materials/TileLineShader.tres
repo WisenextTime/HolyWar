@@ -1,0 +1,14 @@
+[gd_resource type="ShaderMaterial" load_steps=3 format=3 uid="uid://dswdff3qehnm7"]
+
+[ext_resource type="Shader" path="res://Assets/Shaders/TileLine.gdshader" id="1_xlg2v"]
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_bes02"]
+viewport_path = NodePath("TileMask")
+
+[resource]
+resource_local_to_scene = true
+render_priority = 0
+shader = ExtResource("1_xlg2v")
+shader_parameter/LineColor = Color(0, 0, 0, 0.14902)
+shader_parameter/LineWidth = 0.01
+shader_parameter/TileMaskLayer = SubResource("ViewportTexture_bes02")

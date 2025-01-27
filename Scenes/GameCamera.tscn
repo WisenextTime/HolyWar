@@ -1,0 +1,60 @@
+[gd_scene load_steps=9 format=3 uid="uid://c20046b0xd8yk"]
+
+[ext_resource type="Script" path="res://GdScripts/sync_viewport.tres.gd" id="1_8mvhc"]
+[ext_resource type="Script" path="res://Scripts/Game/GameCamera.cs" id="1_h2blg"]
+[ext_resource type="Script" path="res://GdScripts/sync_camera.gd" id="2_0le0g"]
+[ext_resource type="Shader" path="res://Assets/Shaders/TileLine.gdshader" id="4_tb7vr"]
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_s1ce2"]
+viewport_path = NodePath("TileMask")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_e72xa"]
+resource_local_to_scene = true
+render_priority = 0
+shader = ExtResource("4_tb7vr")
+shader_parameter/LineColor = Color(0.2, 1, 0.2, 0.8)
+shader_parameter/LineWidth = 0.045
+shader_parameter/TileMaskLayer = SubResource("ViewportTexture_s1ce2")
+
+[sub_resource type="SphereMesh" id="SphereMesh_k0dy4"]
+resource_local_to_scene = true
+material = SubResource("ShaderMaterial_e72xa")
+flip_faces = true
+radial_segments = 4
+rings = 1
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_mtlo8"]
+viewport_path = NodePath("TileMask")
+
+[node name="GameCamera" type="Camera3D"]
+transform = Transform3D(-1, -1.4189e-07, 5.16436e-08, 0, 0.34202, 0.939693, -1.50996e-07, 0.939693, -0.34202, 0, 0, 0)
+cull_mask = 524289
+script = ExtResource("1_h2blg")
+
+[node name="TileMask" type="SubViewport" parent="."]
+transparent_bg = true
+debug_draw = 1
+render_target_update_mode = 4
+script = ExtResource("1_8mvhc")
+
+[node name="Camera3D" type="Camera3D" parent="TileMask" node_paths=PackedStringArray("Target")]
+cull_mask = 2
+script = ExtResource("2_0le0g")
+Target = NodePath("../..")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+layers = 524289
+mesh = SubResource("SphereMesh_k0dy4")
+
+[node name="ColorRect" type="ColorRect" parent="."]
+offset_right = 194.0
+offset_bottom = 144.0
+
+[node name="TextureRect" type="TextureRect" parent="ColorRect"]
+layout_mode = 0
+offset_left = 27.0
+offset_top = 16.0
+offset_right = 167.0
+offset_bottom = 124.0
+texture = SubResource("ViewportTexture_mtlo8")
+expand_mode = 1

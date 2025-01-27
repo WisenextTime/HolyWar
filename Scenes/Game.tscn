@@ -4,6 +4,7 @@
 [ext_resource type="Script" path="res://Scripts/Game/OldGameMap.cs" id="2_ymkq4"]
 [ext_resource type="Shader" path="res://Assets/Shaders/TileLine.gdshader" id="3_72630"]
 [ext_resource type="Script" path="res://GdScripts/sync_camera.gd" id="4_rc8wr"]
+[ext_resource type="Script" path="res://GdScripts/sync_viewport.tres.gd" id="4_wk828"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_yn66b"]
 sky_top_color = Color(0, 0.85625, 0.792031, 1)
@@ -11,19 +12,19 @@ sky_horizon_color = Color(0.5, 0.837485, 0.823789, 1)
 ground_bottom_color = Color(0, 0, 0, 1)
 ground_horizon_color = Color(0.5, 0.837485, 0.823789, 1)
 
-[sub_resource type="Sky" id="Sky_86oe0"]
+[sub_resource type="Sky" id="Sky_aavxj"]
 sky_material = SubResource("ProceduralSkyMaterial_yn66b")
 
 [sub_resource type="Environment" id="Environment_2ruds"]
 background_mode = 2
-sky = SubResource("Sky_86oe0")
+sky = SubResource("Sky_aavxj")
 tonemap_mode = 2
 glow_enabled = true
 
 [sub_resource type="ViewportTexture" id="ViewportTexture_bes02"]
 viewport_path = NodePath("TileMaskViewport")
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_oklax"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_dttts"]
 resource_local_to_scene = true
 render_priority = 0
 shader = ExtResource("3_72630")
@@ -33,24 +34,10 @@ shader_parameter/TileMaskLayer = SubResource("ViewportTexture_bes02")
 
 [sub_resource type="SphereMesh" id="SphereMesh_v5v48"]
 resource_local_to_scene = true
-material = SubResource("ShaderMaterial_oklax")
+material = SubResource("ShaderMaterial_dttts")
 flip_faces = true
 radius = 2.0
 height = 4.0
-
-[sub_resource type="GDScript" id="GDScript_ilnjl"]
-resource_name = "TileViewPort"
-script/source = "extends SubViewport
-
-# Called when the node enters the scene tree for the first time.
-func _ready():
-	var main_viewport : Viewport = get_parent().get_viewport()
-	var update_size = func():
-		self.size = main_viewport.get_visible_rect().size
-	update_size.call()
-	main_viewport.size_changed.connect(update_size)
-	pass # Replace with function body.
-"
 
 [node name="Game" type="Node" node_paths=PackedStringArray("Camera")]
 script = ExtResource("1_yt5op")
@@ -75,14 +62,14 @@ cull_mask = 524289
 
 [node name="TileLine" type="MeshInstance3D" parent="Camera"]
 transform = Transform3D(1, -7.10543e-15, 3.55271e-15, 0, 1, 0, 0, 0, 1, 0, 0, 0)
-layers = 524289
+layers = 524288
 mesh = SubResource("SphereMesh_v5v48")
 
 [node name="TileMaskViewport" type="SubViewport" parent="."]
 transparent_bg = true
 debug_draw = 1
 render_target_update_mode = 4
-script = SubResource("GDScript_ilnjl")
+script = ExtResource("4_wk828")
 
 [node name="MaskCamera" type="Camera3D" parent="TileMaskViewport" node_paths=PackedStringArray("Target")]
 transform = Transform3D(-1, -8.21506e-08, 2.99003e-08, 0, 0.34202, 0.939693, -8.74228e-08, 0.939693, -0.34202, 0, 10, 0)

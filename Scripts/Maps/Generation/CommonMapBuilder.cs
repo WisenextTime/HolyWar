@@ -4,6 +4,8 @@ using System.Linq;
 
 using Godot;
 
+using HolyWar.Registers;
+
 using KirisameLib.Extensions;
 
 namespace HolyWar.Maps.Generation;
@@ -12,7 +14,7 @@ public class CommonMapBuilder(Vector2I size, int seed = -1) : MapBuilder(size, s
 {
     #region Private Fields
 
-    private Map Map { get; } = new Map(size, new NewTerrain()); //todo: 改掉这个默认地形
+    private Map Map { get; } = new Map(size, DataRegisters.Terrains["Void"]); //todo: 改掉这个默认地形
     private Random Random => field ??= new(Seed);
     private FastNoiseLite Noise => field ??= new() { Seed = Seed, NoiseType = FastNoiseLite.NoiseTypeEnum.Perlin };
     private IList<Image> NoiseImage
@@ -59,45 +61,45 @@ public class CommonMapBuilder(Vector2I size, int seed = -1) : MapBuilder(size, s
             else if (noise <= seaLevel) nativeCoasts.Add(coord);
         }
 
-        HashSet<Vector2I> traversed = [];
-        Queue<Vector2I> searching = [];
-        List<Vector2I> toChange = [];
-        foreach (var coord in nativeCoasts)
-        {
-            if (!traversed.Add(coord)) continue;
-
-            searching.Clear();
-            searching.Enqueue(coord);
-            toChange.Clear();
-            toChange.Add(coord);
-
-            bool pass = true;
-            bool? isLand = null;
-            while (searching.TryDequeue(out var current))
-            {
-                pass = false;
-                isLand = null;
-                foreach (var neighbor in Map.GetNeighborsPos(current))
-                {
-                    if (!traversed.Add(neighbor)) continue;
-
-                    if (nativeCoasts.Contains(neighbor))
-                    {
-                        searching.Enqueue(neighbor);
-                        if (!pass) toChange.Add(neighbor);
-                    }
-                    else if (!pass)
-                    {
-                        var noise = GetNoise(NoiseImage, neighbor, 0);
-                        if (isLand is null) isLand = noise > seaLevel;
-                        else if (isLand != noise > seaLevel) pass = true;
-                    }
-                }
-            }
-
-            if (pass || isLand is null) continue;
-            toChange.Select(c => Map[c]).ForEach(t => t.MainTerrain = isLand.Value ? land : ocean);
-        }
+        // HashSet<Vector2I> traversed = [];
+        // Queue<Vector2I> searching = [];
+        // List<Vector2I> toChange = [];
+        // foreach (var coord in nativeCoasts)
+        // {
+        //     if (!traversed.Add(coord)) continue;
+        //
+        //     searching.Clear();
+        //     searching.Enqueue(coord);
+        //     toChange.Clear();
+        //     toChange.Add(coord);
+        //
+        //     bool pass = true;
+        //     bool? isLand = null;
+        //     while (searching.TryDequeue(out var current))
+        //     {
+        //         pass = false;
+        //         isLand = null;
+        //         foreach (var neighbor in Map.GetNeighborsPos(current))
+        //         {
+        //             if (!traversed.Add(neighbor)) continue;
+        //
+        //             if (nativeCoasts.Contains(neighbor))
+        //             {
+        //                 searching.Enqueue(neighbor);
+        //                 if (!pass) toChange.Add(neighbor);
+        //             }
+        //             else if (!pass)
+        //             {
+        //                 var noise = GetNoise(NoiseImage, neighbor, 0);
+        //                 if (isLand is null) isLand = noise > seaLevel;
+        //                 else if (isLand != noise > seaLevel) pass = true;
+        //             }
+        //         }
+        //     }
+        //
+        //     if (pass || isLand is null) continue;
+        //     toChange.Select(c => Map[c]).ForEach(t => t.MainTerrain = isLand.Value ? land : ocean);
+        // }
 
         return this;
     }
